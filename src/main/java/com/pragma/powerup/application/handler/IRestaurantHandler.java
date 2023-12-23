@@ -4,5 +4,5 @@ import com.pragma.powerup.application.dto.request.RegisterRestaurantDto;
 
 public interface IRestaurantHandler {
 
-    void saveRestaurant(RegisterRestaurantDto registerRestaurantDto);
+    boolean saveRestaurant(RegisterRestaurantDto registerRestaurantDto);
 }

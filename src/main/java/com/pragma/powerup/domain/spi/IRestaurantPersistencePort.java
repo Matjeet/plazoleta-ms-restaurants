@@ -4,5 +4,5 @@ import com.pragma.powerup.domain.model.Restaurant;
 
 public interface IRestaurantPersistencePort {
 
-    void saveRestaurant(Restaurant restaurant);
+    boolean saveRestaurant(Restaurant restaurant);
 }
