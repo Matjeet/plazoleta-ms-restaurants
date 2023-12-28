@@ -1,5 +1,6 @@
 package com.pragma.powerup.application.handler.impl;
 
+import com.pragma.powerup.application.client.IOwnerFeignClient;
 import com.pragma.powerup.application.dto.request.RegisterRestaurantDto;
 import com.pragma.powerup.application.handler.IRestaurantHandler;
 import com.pragma.powerup.application.mapper.IRestaurantRequestMapper;
@@ -16,9 +17,13 @@ public class RestaurantHandler implements IRestaurantHandler {
 
     private final IRestaurantPersistencePort  restaurantPersistencePort;
     private final IRestaurantRequestMapper restaurantRequestMapper;
+    private final IOwnerFeignClient ownerFeignClient;
     @Override
     public boolean saveRestaurant(RegisterRestaurantDto registerRestaurantDto) {
-        Restaurant restaurant = restaurantRequestMapper.toRestaurant(registerRestaurantDto);
-        return restaurantPersistencePort.saveRestaurant(restaurant);
+        if(ownerFeignClient.validateOwnerRole(registerRestaurantDto.getIdOwner())){
+            Restaurant restaurant = restaurantRequestMapper.toRestaurant(registerRestaurantDto);
+            return restaurantPersistencePort.saveRestaurant(restaurant);
+        }
+        return false;
     }
 }
