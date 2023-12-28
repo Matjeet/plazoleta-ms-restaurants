@@ -1,5 +1,6 @@
 package com.pragma.powerup.infrastructure.token.jwt;
 
+import com.pragma.powerup.application.handler.ITokenHandler;
 import com.pragma.powerup.infrastructure.exception.TokenRequiredException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +20,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    private  final ITokenHandler tokenHandler;
     private static final String BEARER_TOKEN_PREFIX = "Bearer ";
     @Override
     protected void doFilterInternal(
