@@ -5,4 +5,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 public interface ITokenHandler {
 
     UsernamePasswordAuthenticationToken getAuthenticationToken(String token);
+
+    String getToken();
 }

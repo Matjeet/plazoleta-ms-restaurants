@@ -45,4 +45,9 @@ public class TokenHandler implements ITokenHandler {
                 role.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())
         );
     }
+
+    @Override
+    public String getToken() {
+        return null;
+    }
 }
