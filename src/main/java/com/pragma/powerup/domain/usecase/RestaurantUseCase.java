@@ -41,7 +41,9 @@ public class RestaurantUseCase implements IRestaurantServicePort {
         if(validPhoneNumber && validNit && validName){
             restaurantPersistencePort.saveRestaurant(restaurant);
         }
+        else {
+            throw new ParameterNotValidException();
+        }
 
-        throw new ParameterNotValidException();
     }
 }
