@@ -9,5 +9,5 @@ public interface ICategoryRepository extends JpaRepository<CategoryEntity, Integ
 
     Optional<CategoryEntity> findByName(String name);
 
-    CategoryEntity getByName(String name);
+    CategoryEntity getById(int id);
 }
