@@ -2,17 +2,19 @@ package com.pragma.powerup.domain.model;
 
 public class Dish {
 
+    private int id;
     private String name;
     private int price;
-    private String Description;
+    private String description;
     private String urlImage;
     private int idCategory;
     private int idRestaurant;
 
-    public Dish(String name, int price, String description, String urlImage, int idCategory, int idRestaurant) {
+    public Dish(int id, String name, int price, String description, String urlImage, int idCategory, int idRestaurant) {
+        this.id = id;
         this.name = name;
         this.price = price;
-        Description = description;
+        this.description = description;
         this.urlImage = urlImage;
         this.idCategory = idCategory;
         this.idRestaurant = idRestaurant;
@@ -21,6 +23,13 @@ public class Dish {
     public Dish() {
     }
 
+    public int getId(){
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     public String getName() {
         return name;
     }
@@ -38,11 +47,11 @@ public class Dish {
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
     }
 
     public String getUrlImage() {
