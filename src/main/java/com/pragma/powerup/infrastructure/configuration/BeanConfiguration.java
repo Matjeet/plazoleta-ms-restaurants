@@ -15,6 +15,7 @@ import com.pragma.powerup.infrastructure.out.jpa.adapter.RestaurantJpaAdapter;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.IDishEntityMapper;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.IObjectEntityMapper;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.IRestaurantEntityMapper;
+import com.pragma.powerup.infrastructure.out.jpa.repository.ICategoryRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IDishRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IObjectRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IRestaurantRepository;
@@ -31,11 +32,12 @@ public class BeanConfiguration {
     private final IRestaurantEntityMapper restaurantEntityMapper;
     private final IDishRepository dishRepository;
     private final IDishEntityMapper dishEntityMapper;
+    private final ICategoryRepository categoryRepository;
 
 
     @Bean
     public IDishPersistencePort dishPersistencePort(){
-        return new DishJpaAdapter(dishRepository,dishEntityMapper);
+        return new DishJpaAdapter(dishRepository,dishEntityMapper, categoryRepository);
     }
 
     @Bean
