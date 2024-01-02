@@ -4,5 +4,5 @@ import com.pragma.powerup.domain.model.Category;
 
 public interface ICategoryPersistencePort {
 
-    void saveCategory(Category category);
+    Category saveCategory(Category category);
 }
