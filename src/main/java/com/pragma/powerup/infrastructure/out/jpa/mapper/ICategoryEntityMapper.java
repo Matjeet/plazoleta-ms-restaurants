@@ -11,4 +11,6 @@ import org.mapstruct.ReportingPolicy;
 public interface ICategoryEntityMapper {
 
     CategoryEntity toEntity(Category category);
+
+    Category toCategory(CategoryEntity categoryEntity);
 }
