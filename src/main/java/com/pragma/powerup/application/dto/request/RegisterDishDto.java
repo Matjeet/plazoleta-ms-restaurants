@@ -11,6 +11,6 @@ public class RegisterDishDto {
     private int price;
     private String description;
     private String urlImage;
-    private RegisterCategoryDto Category;
+    private RegisterCategoryDto category;
     private int idRestaurant;
 }
