@@ -25,11 +25,11 @@ public class DishUseCase implements IDishServicePort {
 
     @Override
     public void updateDish(Dish dish) {
-
+        dishPersistencePort.updateDish(dish);
     }
 
     @Override
     public Dish getDish(int idDish) {
-        return null;
+        return dishPersistencePort.getDish(idDish);
     }
 }
