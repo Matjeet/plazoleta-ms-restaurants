@@ -27,4 +27,14 @@ public class DishJpaAdapter implements IDishPersistencePort {
             );
         }
     }
+
+    @Override
+    public void updateDish(Dish dish) {
+        
+    }
+
+    @Override
+    public Dish getDish(int idDish) {
+        return null;
+    }
 }
