@@ -32,7 +32,12 @@ public class DishJpaAdapter implements IDishPersistencePort {
 
     @Override
     public void updateDish(Dish dish) {
-
+        dishRepository.save(
+                dishEntityMapper.toEntity(
+                        dish,
+                        categoryRepository.getById(dish.getIdCategory())
+                )
+        );
     }
 
     @Override
