@@ -9,5 +9,7 @@ public interface IDishRepository extends JpaRepository<DishEntity, Integer> {
 
     Optional<DishEntity> findByNameAndPrice(String name, int price);
 
-    Optional<DishEntity> getById(int id);
+    Optional<DishEntity> findById(int id);
+
+    DishEntity getById(int id);
 }
