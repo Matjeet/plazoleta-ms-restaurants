@@ -47,7 +47,7 @@ public class TokenHandler implements ITokenHandler {
     }
 
     @Override
-    public String getNameFromToken() {
+    public String getIdFromToken() {
         return null;
     }
 }

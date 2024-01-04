@@ -6,5 +6,5 @@ public interface ITokenHandler {
 
     UsernamePasswordAuthenticationToken getAuthenticationToken(String token);
 
-    String getNameFromToken();
+    String getIdFromToken();
 }
