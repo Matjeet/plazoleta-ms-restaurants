@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface IDishRepository extends JpaRepository<DishEntity, Integer> {
 
     Optional<DishEntity> findByNameAndPrice(String name, int price);
+
+    Optional<DishEntity> getById(int id);
 }
