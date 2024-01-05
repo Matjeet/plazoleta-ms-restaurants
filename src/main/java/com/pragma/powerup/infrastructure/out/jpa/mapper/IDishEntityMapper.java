@@ -17,5 +17,6 @@ public interface IDishEntityMapper {
     DishEntity toEntity(Dish dish, CategoryEntity category);
 
     @Mapping(source = "dishEntity.category.id", target = "idCategory")
+    @Mapping(source = "dishEntity.status.id", target = "idStatus")
     Dish toDish(DishEntity dishEntity);
 }
