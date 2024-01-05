@@ -9,8 +9,9 @@ public class Dish {
     private String urlImage;
     private int idCategory;
     private int idRestaurant;
+    private int idStatus;
 
-    public Dish(int id, String name, int price, String description, String urlImage, int idCategory, int idRestaurant) {
+    public Dish(int id, String name, int price, String description, String urlImage, int idCategory, int idRestaurant, int idStatus) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -18,6 +19,7 @@ public class Dish {
         this.urlImage = urlImage;
         this.idCategory = idCategory;
         this.idRestaurant = idRestaurant;
+        this.idStatus = idStatus;
     }
 
     public Dish() {
@@ -76,5 +78,13 @@ public class Dish {
 
     public void setIdRestaurant(int idRestaurant) {
         this.idRestaurant = idRestaurant;
+    }
+
+    public int getIdStatus() {
+        return idStatus;
+    }
+
+    public void setIdStatus(int idStatus) {
+        this.idStatus = idStatus;
     }
 }
