@@ -26,5 +26,9 @@ public class DishEntity {
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
-    private CategoryEntity Category;
+    private CategoryEntity category;
+
+    @ManyToOne
+    @JoinColumn(name = "status_id", nullable = false)
+    private StatusEntity status;
 }
