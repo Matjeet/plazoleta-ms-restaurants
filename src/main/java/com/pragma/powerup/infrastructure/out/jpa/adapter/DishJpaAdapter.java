@@ -3,6 +3,7 @@ package com.pragma.powerup.infrastructure.out.jpa.adapter;
 import com.pragma.powerup.domain.Constants;
 import com.pragma.powerup.domain.model.Dish;
 import com.pragma.powerup.domain.spi.IDishPersistencePort;
+import com.pragma.powerup.infrastructure.exception.DifferentOwnerException;
 import com.pragma.powerup.infrastructure.exception.DishAlreadyExistException;
 import com.pragma.powerup.infrastructure.exception.DishNotFoundException;
 import com.pragma.powerup.infrastructure.out.jpa.entity.CategoryEntity;
