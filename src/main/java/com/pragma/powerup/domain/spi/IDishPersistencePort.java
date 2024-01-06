@@ -9,4 +9,6 @@ public interface IDishPersistencePort {
     void updateDish(Dish dish);
 
     Dish getDish(int idDish);
+
+    String changeStatus(int idDish, int idOwner);
 }

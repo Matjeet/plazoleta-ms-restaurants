@@ -1,16 +1,20 @@
 package com.pragma.powerup.infrastructure.out.jpa.adapter;
 
+import com.pragma.powerup.domain.Constants;
 import com.pragma.powerup.domain.model.Dish;
 import com.pragma.powerup.domain.spi.IDishPersistencePort;
 import com.pragma.powerup.infrastructure.exception.DishAlreadyExistException;
 import com.pragma.powerup.infrastructure.exception.DishNotFoundException;
 import com.pragma.powerup.infrastructure.out.jpa.entity.CategoryEntity;
 import com.pragma.powerup.infrastructure.out.jpa.entity.DishEntity;
+import com.pragma.powerup.infrastructure.out.jpa.entity.RestaurantEntity;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.IDishEntityMapper;
 import com.pragma.powerup.infrastructure.out.jpa.repository.ICategoryRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IDishRepository;
+import com.pragma.powerup.infrastructure.out.jpa.repository.IRestaurantRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IStatusRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 
 @RequiredArgsConstructor
 public class DishJpaAdapter implements IDishPersistencePort {
@@ -19,6 +23,7 @@ public class DishJpaAdapter implements IDishPersistencePort {
     private final IDishEntityMapper dishEntityMapper;
     private final ICategoryRepository categoryRepository;
     private final IStatusRepository statusRepository;
+    private final IRestaurantRepository restaurantRepository;
     @Override
     public void saveDish(Dish dish) {
 
@@ -55,6 +60,26 @@ public class DishJpaAdapter implements IDishPersistencePort {
         }
         else {
             throw new DishNotFoundException();
+        }
+    }
+
+    @Override
+    public String changeStatus(int idDish, int idOwner) {
+        DishEntity dish = dishRepository.getReferenceById(idDish);
+        RestaurantEntity restaurant = restaurantRepository.getReferenceById(dish.getIdRestaurant());
+        if (restaurant.getIdOwner() == idOwner){
+            if (dish.getStatus().getName().equals(Constants.ENABLE)){
+                dish.getStatus().setName(Constants.DISABLE);
+                dishRepository.save(dish);
+                return Constants.DISABLE;
+            }
+            else {
+                dish.getStatus().setName(Constants.ENABLE);
+                dishRepository.save(dish);
+                return Constants.ENABLE;
+            }
+        } else{
+            throw new DifferentOwnerException();
         }
     }
 }
