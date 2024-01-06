@@ -6,16 +6,15 @@ import com.pragma.powerup.domain.spi.IDishPersistencePort;
 import com.pragma.powerup.infrastructure.exception.DifferentOwnerException;
 import com.pragma.powerup.infrastructure.exception.DishAlreadyExistException;
 import com.pragma.powerup.infrastructure.exception.DishNotFoundException;
-import com.pragma.powerup.infrastructure.out.jpa.entity.CategoryEntity;
 import com.pragma.powerup.infrastructure.out.jpa.entity.DishEntity;
 import com.pragma.powerup.infrastructure.out.jpa.entity.RestaurantEntity;
+import com.pragma.powerup.infrastructure.out.jpa.entity.StatusEntity;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.IDishEntityMapper;
 import com.pragma.powerup.infrastructure.out.jpa.repository.ICategoryRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IDishRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IRestaurantRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IStatusRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 
 @RequiredArgsConstructor
 public class DishJpaAdapter implements IDishPersistencePort {
@@ -70,12 +69,14 @@ public class DishJpaAdapter implements IDishPersistencePort {
         RestaurantEntity restaurant = restaurantRepository.getReferenceById(dish.getIdRestaurant());
         if (restaurant.getIdOwner() == idOwner){
             if (dish.getStatus().getName().equals(Constants.ENABLE)){
-                dish.getStatus().setName(Constants.DISABLE);
+                StatusEntity status = statusRepository.findByName(Constants.DISABLE);
+                dish.setStatus(status);
                 dishRepository.save(dish);
                 return Constants.DISABLE;
             }
             else {
-                dish.getStatus().setName(Constants.ENABLE);
+                StatusEntity status = statusRepository.findByName(Constants.ENABLE);
+                dish.setStatus(status);
                 dishRepository.save(dish);
                 return Constants.ENABLE;
             }
