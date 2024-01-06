@@ -32,4 +32,9 @@ public class DishUseCase implements IDishServicePort {
     public Dish getDish(int idDish) {
         return dishPersistencePort.getDish(idDish);
     }
+
+    @Override
+    public String changeStatus(int idDish, int idOwner) {
+        return dishPersistencePort.changeStatus(idDish, idOwner);
+    }
 }

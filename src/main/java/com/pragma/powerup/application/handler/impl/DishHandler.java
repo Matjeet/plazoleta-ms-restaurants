@@ -5,8 +5,10 @@ import com.pragma.powerup.application.dto.request.UpdateDishDto;
 import com.pragma.powerup.application.handler.IDishHandler;
 import com.pragma.powerup.application.mapper.ICategoryRequestMapper;
 import com.pragma.powerup.application.mapper.IDishRequestMapper;
+import com.pragma.powerup.domain.Constants;
 import com.pragma.powerup.domain.api.ICategoryServicePort;
 import com.pragma.powerup.domain.api.IDishServicePort;
+import com.pragma.powerup.domain.api.IStatusServicePort;
 import com.pragma.powerup.domain.model.Category;
 import com.pragma.powerup.domain.model.Dish;
 import lombok.RequiredArgsConstructor;
@@ -22,14 +24,16 @@ public class DishHandler implements IDishHandler {
     private final ICategoryServicePort categoryServicePort;
     private final IDishRequestMapper dishRequestMapper;
     private final ICategoryRequestMapper categoryRequestMapper;
+    private final IStatusServicePort statusServicePort;
     @Override
     public void saveDish(RegisterDishDto registerDishDto) {
-
+        int idStatus = statusServicePort.getStatusId(Constants.ENABLE);
         Category savedCategory = categoryServicePort.saveCategory(
                 categoryRequestMapper.toCategory(registerDishDto)
         );
         Dish dish = dishRequestMapper.toDish(registerDishDto);
         dish.setIdCategory(savedCategory.getId());
+        dish.setIdStatus(idStatus);
         dishServicePort.saveDish(dish);
     }
 
@@ -39,5 +43,10 @@ public class DishHandler implements IDishHandler {
         dishToUpdate.setPrice(updateDishDto.getPrice());
         dishToUpdate.setDescription(updateDishDto.getDescription());
         dishServicePort.updateDish(dishToUpdate);
+    }
+
+    @Override
+    public String changeStatus(int idDish, int idOwner) {
+        return dishServicePort.changeStatus(idDish, idOwner);
     }
 }

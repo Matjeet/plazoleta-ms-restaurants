@@ -53,4 +53,26 @@ public class DishRestController {
         dishHandler.updateDish(updateDishDto, id);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @Operation(summary = "Change the dish's status")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "The status changed successful",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Only the owner can change the status",
+                    content = @Content
+            )
+    })
+    @PreAuthorize("hasRole('ROLE_propietario')")
+    @GetMapping("/changeStatus/{idDish}/{idOwner}")
+    public ResponseEntity<String> changeStatus(@PathVariable int idDish, @PathVariable int idOwner) {
+        String status = dishHandler.changeStatus(idDish, idOwner);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body("El plato ahora está " + status);
+    }
 }

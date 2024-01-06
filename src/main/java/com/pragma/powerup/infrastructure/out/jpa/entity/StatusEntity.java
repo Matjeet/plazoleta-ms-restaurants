@@ -8,27 +8,15 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "dish")
+@Table(name = "dish_status")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class DishEntity {
+public class StatusEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-    private int price;
-    private String description;
-    private String urlImage;
-    private int idRestaurant;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
-    private CategoryEntity category;
-
-    @ManyToOne
-    @JoinColumn(name = "status_id", nullable = false)
-    private StatusEntity status;
 }
