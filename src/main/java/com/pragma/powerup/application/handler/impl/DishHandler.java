@@ -44,4 +44,9 @@ public class DishHandler implements IDishHandler {
         dishToUpdate.setDescription(updateDishDto.getDescription());
         dishServicePort.updateDish(dishToUpdate);
     }
+
+    @Override
+    public String changeStatus(int idDish, int idOwner) {
+        return dishServicePort.changeStatus(idDish, idOwner);
+    }
 }

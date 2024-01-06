@@ -8,4 +8,6 @@ public interface IDishHandler {
     void saveDish(RegisterDishDto registerDishDto);
 
     void updateDish(UpdateDishDto updateDishDto, int id);
+
+    String changeStatus(int idDish, int idOwner);
 }
