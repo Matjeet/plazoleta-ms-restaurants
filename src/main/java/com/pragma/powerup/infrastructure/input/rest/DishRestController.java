@@ -53,4 +53,13 @@ public class DishRestController {
         dishHandler.updateDish(updateDishDto, id);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @PreAuthorize("hasRole('ROLE_propietario')")
+    @GetMapping("/changeStatus/{idDish}/{idOwner}")
+    public ResponseEntity<String> changeStatus(@PathVariable int idDish, @PathVariable int idOwner) {
+        String status = dishHandler.changeStatus(idDish, idOwner);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body("El plato ahora está " + status);
+    }
 }
