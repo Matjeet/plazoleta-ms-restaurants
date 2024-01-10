@@ -2,11 +2,15 @@ package com.pragma.powerup.application.handler.impl;
 
 import com.pragma.powerup.application.client.IOwnerFeignClient;
 import com.pragma.powerup.application.dto.request.RegisterRestaurantDto;
+import com.pragma.powerup.application.dto.response.RestaurantsPageResponseDto;
 import com.pragma.powerup.application.handler.IRestaurantHandler;
 import com.pragma.powerup.application.mapper.request.IRestaurantRequestMapper;
+import com.pragma.powerup.application.mapper.response.IRestaurantResponseMapper;
 import com.pragma.powerup.domain.api.IRestaurantServicePort;
 import com.pragma.powerup.domain.model.Restaurant;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +21,7 @@ public class RestaurantHandler implements IRestaurantHandler {
 
     private final IRestaurantServicePort restaurantServicePort;
     private final IRestaurantRequestMapper restaurantRequestMapper;
+    private final IRestaurantResponseMapper restaurantResponseMapper;
     private final IOwnerFeignClient ownerFeignClient;
     @Override
     public boolean saveRestaurant(RegisterRestaurantDto registerRestaurantDto) {
@@ -28,5 +33,11 @@ public class RestaurantHandler implements IRestaurantHandler {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Page<RestaurantsPageResponseDto> getRestaurants(Pageable pageable) {
+        Page<Restaurant> restaurants = restaurantServicePort.getRestaurants(pageable);
+        return restaurantResponseMapper.toRestaurantsPageDto(restaurants);
     }
 }
