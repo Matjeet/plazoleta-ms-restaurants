@@ -40,7 +40,7 @@ public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
         catch (Exception e){
             return null;
         }
-        
+
         return restaurantEntityMapper.toRestaurantsPage(restaurantEntities);
     }
 }
