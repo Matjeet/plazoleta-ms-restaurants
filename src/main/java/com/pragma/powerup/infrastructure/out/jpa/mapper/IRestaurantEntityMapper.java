@@ -14,5 +14,5 @@ public interface IRestaurantEntityMapper {
 
     RestaurantEntity toEntity(Restaurant restaurant);
     
-    Page<Restaurant> toRestaurantsPage(Page<RestaurantEntity> restaurantEntities);
+    Restaurant toRestaurant(RestaurantEntity restaurantEntity);
 }

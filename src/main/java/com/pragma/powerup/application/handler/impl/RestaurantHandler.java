@@ -37,7 +37,6 @@ public class RestaurantHandler implements IRestaurantHandler {
 
     @Override
     public Page<RestaurantsPageResponseDto> getRestaurants(Pageable pageable) {
-        Page<Restaurant> restaurants = restaurantServicePort.getRestaurants(pageable);
-        return restaurantResponseMapper.toRestaurantsPageDto(restaurants);
+        return restaurantServicePort.getRestaurants(pageable).map(restaurantResponseMapper::toRestaurantsPageDto);
     }
 }

@@ -11,5 +11,5 @@ import org.springframework.data.domain.Page;
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface IRestaurantResponseMapper {
 
-    Page<RestaurantsPageResponseDto> toRestaurantsPageDto(Page<Restaurant> restaurants);
+    RestaurantsPageResponseDto toRestaurantsPageDto(Restaurant restaurant);
 }
