@@ -35,7 +35,7 @@ public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
         Page<RestaurantEntity> restaurantEntities;
 
         try{
-            restaurantEntities = restaurantRepository.findAll(pageable);
+            restaurantEntities = restaurantRepository.findAllByOrderByNameAsc(pageable);
         }
         catch (Exception e){
             return null;
