@@ -22,4 +22,9 @@ public class CategoryJpaAdapter implements ICategoryPersistencePort {
                 )
         );
     }
+
+    @Override
+    public Category getCategory(int id) {
+        return categoryEntityMapper.toCategory(categoryRepository.getReferenceById(id));
+    }
 }
