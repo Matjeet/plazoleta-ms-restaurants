@@ -51,6 +51,19 @@ public class RestaurantRestController {
                 .build();
     }
 
+    @Operation(summary = "Get list of restaurants in alphabetical order")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "The request was successfully answered",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Only the clients can use this endpoint",
+                    content = @Content
+            )
+    })
     @GetMapping("/restaurants/{page}/{size}")
     @PreAuthorize("hasRole('ROLE_cliente')")
     public Page<RestaurantsPageResponseDto> getRestaurants(@PathVariable int page, @PathVariable int size){
