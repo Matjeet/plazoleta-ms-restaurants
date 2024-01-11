@@ -4,6 +4,8 @@ import com.pragma.powerup.domain.api.IRestaurantServicePort;
 import com.pragma.powerup.domain.exception.ParameterNotValidException;
 import com.pragma.powerup.domain.model.Restaurant;
 import com.pragma.powerup.domain.spi.IRestaurantPersistencePort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.regex.Pattern;
 
@@ -45,5 +47,10 @@ public class RestaurantUseCase implements IRestaurantServicePort {
             throw new ParameterNotValidException();
         }
 
+    }
+
+    @Override
+    public Page<Restaurant> getRestaurants(Pageable pageable) {
+        return restaurantPersistencePort.getRestaurants(pageable);
     }
 }
