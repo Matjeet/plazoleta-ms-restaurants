@@ -15,5 +15,6 @@ public interface IDishResponseMapper {
 
     @Mapping(source = "category.name", target = "category.name")
     @Mapping(source = "status.name", target = "status.name")
+    @Mapping(source = "dish.name", target = "name")
     DishPageResponseDto toDishPageDto(Dish dish, Category category, Status status);
 }
