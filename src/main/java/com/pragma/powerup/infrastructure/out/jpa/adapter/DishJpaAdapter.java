@@ -15,6 +15,8 @@ import com.pragma.powerup.infrastructure.out.jpa.repository.IDishRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IRestaurantRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IStatusRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @RequiredArgsConstructor
 public class DishJpaAdapter implements IDishPersistencePort {
@@ -82,6 +84,20 @@ public class DishJpaAdapter implements IDishPersistencePort {
             }
         } else{
             throw new DifferentOwnerException();
+        }
+    }
+
+    @Override
+    public Page<Dish> getMenu(Pageable pageable, int idRestaurant, String category) {
+        if(category.isEmpty()){
+          return dishRepository.findAllByIdRestaurant(pageable, idRestaurant).map(dishEntityMapper::toDish);
+        }
+        else{
+            return dishRepository.findAllByIdRestaurantAndCategory(
+                    pageable,
+                    idRestaurant,
+                    categoryRepository.getByName(category)
+                    ).map(dishEntityMapper::toDish);
         }
     }
 }
