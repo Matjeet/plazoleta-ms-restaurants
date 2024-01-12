@@ -2,12 +2,16 @@ package com.pragma.powerup.infrastructure.input.rest;
 
 import com.pragma.powerup.application.dto.request.RegisterDishDto;
 import com.pragma.powerup.application.dto.request.UpdateDishDto;
+import com.pragma.powerup.application.dto.response.DishPageResponseDto;
 import com.pragma.powerup.application.handler.IDishHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -74,5 +78,17 @@ public class DishRestController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body("El plato ahora está " + status);
+    }
+
+    @PreAuthorize("hasRole('ROLE_cliente')")
+    @GetMapping("/menu/{page}/{size}/{idRestaurant}")
+    public Page<DishPageResponseDto> getMenu(
+            @PathVariable int page,
+            @PathVariable int size,
+            @PathVariable int idRestaurant,
+            @RequestParam(required = false, defaultValue = "") String categoryDish
+    ){
+        Pageable pageable = PageRequest.of(page, size);
+        return dishHandler.getMenu(pageable, idRestaurant, categoryDish);
     }
 }
