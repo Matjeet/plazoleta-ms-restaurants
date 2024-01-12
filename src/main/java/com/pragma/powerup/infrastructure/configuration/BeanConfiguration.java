@@ -4,10 +4,7 @@ import com.pragma.powerup.domain.api.*;
 import com.pragma.powerup.domain.spi.*;
 import com.pragma.powerup.domain.usecase.*;
 import com.pragma.powerup.infrastructure.out.jpa.adapter.*;
-import com.pragma.powerup.infrastructure.out.jpa.mapper.ICategoryEntityMapper;
-import com.pragma.powerup.infrastructure.out.jpa.mapper.IDishEntityMapper;
-import com.pragma.powerup.infrastructure.out.jpa.mapper.IObjectEntityMapper;
-import com.pragma.powerup.infrastructure.out.jpa.mapper.IRestaurantEntityMapper;
+import com.pragma.powerup.infrastructure.out.jpa.mapper.*;
 import com.pragma.powerup.infrastructure.out.jpa.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -25,10 +22,11 @@ public class BeanConfiguration {
     private final ICategoryRepository categoryRepository;
     private final ICategoryEntityMapper categoryEntityMapper;
     private final IStatusRepository statusRepository;
+    private final IStatusEntityMapper statusEntityMapper;
 
     @Bean
     public IStatusPersistencePort statusPersistencePort(){
-        return new StatusJpaAdapter(statusRepository);
+        return new StatusJpaAdapter(statusRepository, statusEntityMapper);
     }
 
     @Bean

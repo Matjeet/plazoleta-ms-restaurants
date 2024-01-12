@@ -15,4 +15,9 @@ public class StatusUseCase implements IStatusServicePort {
     public int getStatusId(String statusName) {
         return statusPersistencePort.getStatusId(statusName);
     }
+
+    @Override
+    public Status getStatus(int id) {
+        return statusPersistencePort.getStatus(id);
+    }
 }
