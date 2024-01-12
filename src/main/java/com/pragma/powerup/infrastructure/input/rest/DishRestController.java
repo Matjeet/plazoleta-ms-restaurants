@@ -80,6 +80,18 @@ public class DishRestController {
                 .body("El plato ahora está " + status);
     }
 
+    @Operation(summary = "Get the menu of a specific restaurant")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "The request was successfully answered",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Only the clients can use this endpoint"
+            )
+    })
     @PreAuthorize("hasRole('ROLE_cliente')")
     @GetMapping("/menu/{page}/{size}/{idRestaurant}")
     public Page<DishPageResponseDto> getMenu(
