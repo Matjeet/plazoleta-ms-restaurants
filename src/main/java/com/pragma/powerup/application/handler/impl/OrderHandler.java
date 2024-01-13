@@ -7,7 +7,6 @@ import com.pragma.powerup.application.mapper.request.IOrderRequestMapper;
 import com.pragma.powerup.domain.api.IOrderDishServicePort;
 import com.pragma.powerup.domain.api.IOrderServicePort;
 import com.pragma.powerup.domain.api.IStatusServicePort;
-import com.pragma.powerup.domain.model.Order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class OrderDish implements IOrderHandler {
+public class OrderHandler implements IOrderHandler {
 
     private final IOrderRequestMapper orderRequestMapper;
     private final IOrderDishRequestMapper orderDishRequestMapper;
