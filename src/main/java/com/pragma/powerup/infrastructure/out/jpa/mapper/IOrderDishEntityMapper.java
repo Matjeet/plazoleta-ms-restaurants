@@ -13,7 +13,7 @@ import org.mapstruct.ReportingPolicy;
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface IOrderDishEntityMapper {
 
-    @Mapping(source = "id", target = "id")
+    @Mapping(source = "orderDish.id", target = "id")
     @Mapping(source = "dishEntity", target = "dish")
     @Mapping(source = "orderEntity", target = "order")
     OrderDishEntity toEntity(OrderDish orderDish, DishEntity dishEntity, OrderEntity orderEntity);
