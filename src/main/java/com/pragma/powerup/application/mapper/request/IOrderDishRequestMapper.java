@@ -14,5 +14,5 @@ import java.util.List;
 public interface IOrderDishRequestMapper {
 
     @Mapping(source = "idOrder", target = "idOrder")
-    List<OrderDish> toOrderDishList(List<RegisterOrderDishRequestDto> orderDishRequestDtos, int idOrder);
+    OrderDish toOrderDish(RegisterOrderDishRequestDto orderDishRequestDtos, int idOrder);
 }

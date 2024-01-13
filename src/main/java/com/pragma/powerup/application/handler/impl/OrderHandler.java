@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -31,10 +33,12 @@ public class OrderHandler implements IOrderHandler {
         int idOrder = orderServicePort.saveOrder(orderRequestMapper.toOrder(registerOrderRequestDto, idStatus));
 
         orderDishServicePort.saveOrderDish(
-                orderDishRequestMapper.toOrderDishList(
-                        registerOrderRequestDto.getOrderDishRequestDtos(),
-                        idOrder
-                )
+                registerOrderRequestDto.getOrderDishRequestDtos().stream().map(
+                        registerOrderDishRequestDto -> orderDishRequestMapper.toOrderDish(
+                                registerOrderDishRequestDto,
+                                idOrder
+                        )
+                ).collect(Collectors.toList())
         );
     }
 }
