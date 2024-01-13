@@ -25,5 +25,5 @@ public class OrderEntity {
 
     @ManyToOne
     @JoinColumn(name = "status_id", nullable = false)
-    private StatusEntity idStatus;
+    private StatusEntity status;
 }
