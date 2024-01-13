@@ -12,7 +12,7 @@ public class OrderUseCase implements IOrderServicePort {
     }
 
     @Override
-    public void saveOrder(Order order) {
-        orderPersistencePort.saveOrder(order);
+    public int saveOrder(Order order) {
+        return orderPersistencePort.saveOrder(order);
     }
 }

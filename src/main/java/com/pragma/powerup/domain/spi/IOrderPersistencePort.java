@@ -4,5 +4,5 @@ import com.pragma.powerup.domain.model.Order;
 
 public interface IOrderPersistencePort {
 
-    void saveOrder(Order order);
+    int saveOrder(Order order);
 }

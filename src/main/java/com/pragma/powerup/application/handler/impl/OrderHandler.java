@@ -28,11 +28,12 @@ public class OrderHandler implements IOrderHandler {
 
         int idStatus = statusServicePort.getStatusId(BACKORDER);
 
-        orderServicePort.saveOrder(orderRequestMapper.toOrder(registerOrderRequestDto, idStatus));
+        int idOrder = orderServicePort.saveOrder(orderRequestMapper.toOrder(registerOrderRequestDto, idStatus));
 
         orderDishServicePort.saveOrderDish(
                 orderDishRequestMapper.toOrderDishList(
-                        registerOrderRequestDto.getOrderDishRequestDtos()
+                        registerOrderRequestDto.getOrderDishRequestDtos(),
+                        idOrder
                 )
         );
     }
