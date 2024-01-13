@@ -4,6 +4,8 @@ import com.pragma.powerup.domain.api.IOrderDishServicePort;
 import com.pragma.powerup.domain.model.OrderDish;
 import com.pragma.powerup.domain.spi.IOrderDishPersistencePort;
 
+import java.util.List;
+
 public class OrderDishUseCase implements IOrderDishServicePort {
 
     private final IOrderDishPersistencePort orderDishPersistencePort;
@@ -12,7 +14,7 @@ public class OrderDishUseCase implements IOrderDishServicePort {
         this.orderDishPersistencePort = orderDishPersistencePort;
     }
     @Override
-    public void saveOrderDish(OrderDish orderDish) {
-        orderDishPersistencePort.saveOrderDish(orderDish);
+    public void saveOrderDish(List<OrderDish> orderDishes) {
+        orderDishPersistencePort.saveOrderDish(orderDishes);
     }
 }
