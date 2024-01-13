@@ -23,6 +23,40 @@ public class BeanConfiguration {
     private final ICategoryEntityMapper categoryEntityMapper;
     private final IStatusRepository statusRepository;
     private final IStatusEntityMapper statusEntityMapper;
+    private final IOrderEntityMapper orderEntityMapper;
+    private final IOrderRepository orderRepository;
+    private final IOrderDishEntityMapper orderDishEntityMapper;
+    private final IOrderDishRepository orderDishRepository;
+
+    @Bean
+    public IOrderDishPersistencePort orderDishPersistencePort(){
+        return new OrderDishJpaAdapter(
+                orderDishEntityMapper,
+                orderDishRepository,
+                dishRepository,
+                orderRepository
+        );
+    }
+
+    @Bean
+    public IOrderDishServicePort orderDishServicePort(){
+        return new OrderDishUseCase(orderDishPersistencePort());
+    }
+
+    @Bean
+    public IOrderPersistencePort orderPersistencePort(){
+        return new OrderJpaAdapter(
+                orderEntityMapper,
+                orderRepository,
+                restaurantRepository,
+                statusRepository
+        );
+    }
+
+    @Bean
+    public IOrderServicePort orderServicePort(){
+        return new OrderUseCase(orderPersistencePort());
+    }
 
     @Bean
     public IStatusPersistencePort statusPersistencePort(){
