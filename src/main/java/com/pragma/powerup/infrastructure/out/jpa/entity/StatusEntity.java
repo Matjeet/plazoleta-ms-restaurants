@@ -8,7 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "dish_status")
+@Table(name = "all_status")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
