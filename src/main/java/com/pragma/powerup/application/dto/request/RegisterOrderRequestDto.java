@@ -10,5 +10,6 @@ import java.util.List;
 public class RegisterOrderRequestDto {
 
     private int idRestaurant;
+    private int idClient;
     private List<RegisterOrderDishRequestDto> orderDishRequestDtos;
 }

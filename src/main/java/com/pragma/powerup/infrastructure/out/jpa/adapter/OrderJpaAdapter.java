@@ -2,6 +2,7 @@ package com.pragma.powerup.infrastructure.out.jpa.adapter;
 
 import com.pragma.powerup.domain.model.Order;
 import com.pragma.powerup.domain.spi.IOrderPersistencePort;
+import com.pragma.powerup.infrastructure.exception.CustomerHasAnOrderException;
 import com.pragma.powerup.infrastructure.out.jpa.entity.OrderEntity;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.IOrderEntityMapper;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IOrderRepository;
@@ -19,13 +20,18 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
 
     @Override
     public int saveOrder(Order order) {
-        OrderEntity orderEntity = orderRepository.save(
-                orderEntityMapper.toEntity(
-                        order,
-                        restaurantRepository.getReferenceById(order.getIdRestaurant()),
-                        statusRepository.getReferenceById(order.getIdStatus())
-                )
-        );
-        return orderEntity.getId();
+        if (orderRepository.findByIdClient(order.getIdClient()).isPresent()){
+            throw new CustomerHasAnOrderException();
+        }
+        else{
+            OrderEntity orderEntity = orderRepository.save(
+                    orderEntityMapper.toEntity(
+                            order,
+                            restaurantRepository.getReferenceById(order.getIdRestaurant()),
+                            statusRepository.getReferenceById(order.getIdStatus())
+                    )
+            );
+            return orderEntity.getId();
+        }
     }
 }

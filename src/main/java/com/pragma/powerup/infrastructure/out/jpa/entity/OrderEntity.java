@@ -18,6 +18,7 @@ public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    private int idClient;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id", nullable = false)
