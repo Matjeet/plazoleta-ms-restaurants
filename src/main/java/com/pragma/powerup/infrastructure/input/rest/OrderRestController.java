@@ -43,6 +43,18 @@ public class OrderRestController {
                 .build();
     }
 
+    @Operation(summary = "Get a page of orders from a specific restaurant and filtered by status")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "The request has been answered successfully",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Only an employee can make a request"
+            )
+    })
     @PreAuthorize("hasRole('ROLE_empleado')")
     @GetMapping("/orders/{page}/{size}/{idStatus}/{idEmployee}/{idRestaurant}")
     public ResponseEntity<List<OrderPageResponseDto>> getOrders(
