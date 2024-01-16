@@ -34,4 +34,9 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
             return orderEntity.getId();
         }
     }
+
+    @Override
+    public Order getOrder(int id) {
+        return orderEntityMapper.toOrder(orderRepository.getReferenceById(id));
+    }
 }
