@@ -38,7 +38,7 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     }
 
     @Override
-    public Page<Order> getOrder(Pageable pageable, int id) {
+    public Page<Order> getOrderByStatus(Pageable pageable, int id) {
         return null;
     }
 }

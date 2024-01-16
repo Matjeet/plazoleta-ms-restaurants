@@ -8,5 +8,5 @@ public interface IOrderPersistencePort {
 
     int saveOrder(Order order);
 
-    Page<Order> getOrder(Pageable pageable, int id);
+    Page<Order> getOrderByStatus(Pageable pageable, int id);
 }
