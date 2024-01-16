@@ -20,6 +20,6 @@ public class OrderDishUseCase implements IOrderDishServicePort {
 
     @Override
     public List<OrderDish> getOrderDishList(int idOrder) {
-        return null;
+        return orderDishPersistencePort.getOrderDishList(idOrder);
     }
 }
