@@ -36,6 +36,6 @@ public class OrderDishJpaAdapter implements IOrderDishPersistencePort {
 
     @Override
     public List<OrderDish> getOrderDishList(int idOrder) {
-        return orderRepository.findAllByIdOrder(idOrder);
+        return orderDishRepository.findAllByOrder(orderRepository.getReferenceById(idOrder));
     }
 }
