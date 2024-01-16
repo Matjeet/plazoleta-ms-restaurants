@@ -15,4 +15,9 @@ public class OrderUseCase implements IOrderServicePort {
     public int saveOrder(Order order) {
         return orderPersistencePort.saveOrder(order);
     }
+
+    @Override
+    public Order getOrder(int id) {
+        return orderPersistencePort.getOrder(id);
+    }
 }
