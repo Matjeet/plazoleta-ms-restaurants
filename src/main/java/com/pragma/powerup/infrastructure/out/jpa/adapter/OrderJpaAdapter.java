@@ -9,6 +9,7 @@ import com.pragma.powerup.infrastructure.out.jpa.repository.IOrderRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IRestaurantRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IStatusRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 
 @RequiredArgsConstructor
 public class OrderJpaAdapter implements IOrderPersistencePort {
@@ -36,7 +37,7 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     }
 
     @Override
-    public Order getOrder(int id) {
-        return orderEntityMapper.toOrder(orderRepository.getReferenceById(id));
+    public Page<Order> getOrder(int id) {
+        return null;
     }
 }
