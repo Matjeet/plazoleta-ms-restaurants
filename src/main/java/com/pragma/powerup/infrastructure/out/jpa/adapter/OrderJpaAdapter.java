@@ -10,6 +10,7 @@ import com.pragma.powerup.infrastructure.out.jpa.repository.IRestaurantRepositor
 import com.pragma.powerup.infrastructure.out.jpa.repository.IStatusRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @RequiredArgsConstructor
 public class OrderJpaAdapter implements IOrderPersistencePort {
@@ -37,7 +38,7 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     }
 
     @Override
-    public Page<Order> getOrder(int id) {
+    public Page<Order> getOrder(Pageable pageable, int id) {
         return null;
     }
 }
