@@ -44,11 +44,12 @@ public class OrderRestController {
     }
 
     @PreAuthorize("hasRole('ROLE_empleado')")
-    @GetMapping("/orders/{page}/{size}/{idStatus}/{idRestaurant}")
+    @GetMapping("/orders/{page}/{size}/{idStatus}/{idEmployee}/{idRestaurant}")
     public ResponseEntity<List<OrderPageResponseDto>> getOrders(
             @PathVariable int page,
             @PathVariable int size,
             @PathVariable int idStatus,
+            @PathVariable int idEmployee,
             @PathVariable int idRestaurant
     ) {
         Pageable pageable = PageRequest.of(page, size);
@@ -56,6 +57,7 @@ public class OrderRestController {
         Page<OrderPageResponseDto> pageResponseDtos = orderHandler.getOrderByStatusAndRestaurant(
                 pageable,
                 idStatus,
+                idEmployee,
                 idRestaurant
         );
 

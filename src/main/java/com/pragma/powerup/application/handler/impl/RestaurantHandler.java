@@ -1,6 +1,6 @@
 package com.pragma.powerup.application.handler.impl;
 
-import com.pragma.powerup.application.client.IOwnerFeignClient;
+import com.pragma.powerup.application.client.IUsersFeignClient;
 import com.pragma.powerup.application.dto.request.RegisterRestaurantDto;
 import com.pragma.powerup.application.dto.response.RestaurantsPageResponseDto;
 import com.pragma.powerup.application.handler.IRestaurantHandler;
@@ -23,11 +23,11 @@ public class RestaurantHandler implements IRestaurantHandler {
     private final IRestaurantServicePort restaurantServicePort;
     private final IRestaurantRequestMapper restaurantRequestMapper;
     private final IRestaurantResponseMapper restaurantResponseMapper;
-    private final IOwnerFeignClient ownerFeignClient;
+    private final IUsersFeignClient usersFeignClient;
     private final IHttpRequestContextHolderServicePort httpRequestContextHolderServicePort;
     @Override
     public boolean saveRestaurant(RegisterRestaurantDto registerRestaurantDto) {
-        if(ownerFeignClient.validateOwnerRole(
+        if(usersFeignClient.validateOwnerRole(
                 httpRequestContextHolderServicePort.getToken(),
                 registerRestaurantDto.getIdOwner())){
             Restaurant restaurant = restaurantRequestMapper.toRestaurant(registerRestaurantDto);

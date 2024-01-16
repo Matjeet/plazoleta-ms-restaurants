@@ -9,5 +9,5 @@ public interface IOrderHandler {
 
     void saveOrder(RegisterOrderRequestDto registerOrderRequestDto);
 
-    Page<OrderPageResponseDto> getOrderByStatusAndRestaurant(Pageable pageable, int idStatus, int idRestaurant);
+    Page<OrderPageResponseDto> getOrderByStatusAndRestaurant(Pageable pageable, int idStatus, int idEmployee, int idRestaurant);
 }

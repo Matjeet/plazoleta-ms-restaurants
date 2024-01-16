@@ -1,6 +1,6 @@
 package com.pragma.powerup.application.handler.impl;
 
-import com.pragma.powerup.application.client.IOwnerFeignClient;
+import com.pragma.powerup.application.client.IUsersFeignClient;
 import com.pragma.powerup.application.dto.request.RegisterRestaurantDto;
 import com.pragma.powerup.application.mapper.request.IRestaurantRequestMapper;
 import com.pragma.powerup.domain.api.IRestaurantServicePort;
@@ -19,7 +19,7 @@ class RestaurantHandlerTest {
     private RegisterRestaurantDto registerRestaurantDto;
 
     @Mock
-    private IOwnerFeignClient ownerFeignClient;
+    private IUsersFeignClient ownerFeignClient;
 
     @Mock
     private IRestaurantRequestMapper restaurantRequestMapper;

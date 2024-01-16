@@ -1,9 +1,11 @@
 package com.pragma.powerup.application.handler.impl;
 
+import com.pragma.powerup.application.client.IUsersFeignClient;
 import com.pragma.powerup.application.dto.request.RegisterOrderRequestDto;
 import com.pragma.powerup.application.dto.response.DishPageResponseDto;
 import com.pragma.powerup.application.dto.response.OrderDishListResponseDto;
 import com.pragma.powerup.application.dto.response.OrderPageResponseDto;
+import com.pragma.powerup.application.exceptions.DifferentRestaurantEmployeeException;
 import com.pragma.powerup.application.handler.IOrderHandler;
 import com.pragma.powerup.application.mapper.request.IOrderDishRequestMapper;
 import com.pragma.powerup.application.mapper.request.IOrderRequestMapper;
@@ -37,6 +39,8 @@ public class OrderHandler implements IOrderHandler {
     private final IOrderResponseMapper orderResponseMapper;
     private final IRestaurantResponseMapper restaurantResponseMapper;
     private final IStatusResponseMapper statusResponseMapper;
+    private final IUsersFeignClient usersFeignClient;
+    private final IHttpRequestContextHolderServicePort httpRequestContextHolderServicePort;
 
     private static final String BACKORDER = "pendiente";
     @Override
@@ -61,42 +65,58 @@ public class OrderHandler implements IOrderHandler {
     }
 
     @Override
-    public Page<OrderPageResponseDto> getOrderByStatusAndRestaurant(Pageable pageable, int idStatus, int idRestaurant) {
+    public Page<OrderPageResponseDto> getOrderByStatusAndRestaurant(
+            Pageable pageable,
+            int idStatus,
+            int idEmployee ,
+            int idRestaurant
+    ) {
 
-        Page<Order> orders = orderServicePort.getOrderByStatusAndRestaurant(
-                pageable,
-                idStatus,
+        if (usersFeignClient.validateRestaurantEmployee(
+                httpRequestContextHolderServicePort.getToken(),
+                idEmployee,
                 idRestaurant
-        );
-
-
-        return orders.map(order -> {
-            List<OrderDish> orderDishes = orderDishServicePort.getOrderDishList(order.getId());
-
-            List<OrderDishListResponseDto> orderDishListResponseDtos = orderDishes.stream().map(
-                    orderDish -> {
-
-                Dish dish = dishServicePort.getDish(orderDish.getIdDish());
-                Category category = categoryServicePort.getCategory(dish.getIdCategory());
-                Status status = statusServicePort.getStatus(dish.getIdStatus());
-
-                DishPageResponseDto dishPageResponseDto = dishResponseMapper.toDishPageDto(
-                        dish,
-                        category,
-                        status
-                );
-
-                return orderDishResponseMapper.toOrderDishDto(orderDish, dishPageResponseDto);
-            }).collect(Collectors.toList());
-
-            Restaurant restaurant = restaurantServicePort.getRestaurant(order.getIdRestaurant());
-            Status status = statusServicePort.getStatus(order.getIdStatus());
-            return orderResponseMapper.toOrderPageDto(
-                    order,
-                    restaurantResponseMapper.toRestaurantsPageDto(restaurant),
-                    statusResponseMapper.toStatusOrderDto(status),
-                    orderDishListResponseDtos
+        ))
+        {
+            Page<Order> orders = orderServicePort.getOrderByStatusAndRestaurant(
+                    pageable,
+                    idStatus,
+                    idRestaurant
             );
-        });
+
+
+            return orders.map(order -> {
+                List<OrderDish> orderDishes = orderDishServicePort.getOrderDishList(order.getId());
+
+                List<OrderDishListResponseDto> orderDishListResponseDtos = orderDishes.stream().map(
+                        orderDish -> {
+
+                            Dish dish = dishServicePort.getDish(orderDish.getIdDish());
+                            Category category = categoryServicePort.getCategory(dish.getIdCategory());
+                            Status status = statusServicePort.getStatus(dish.getIdStatus());
+
+                            DishPageResponseDto dishPageResponseDto = dishResponseMapper.toDishPageDto(
+                                    dish,
+                                    category,
+                                    status
+                            );
+
+                            return orderDishResponseMapper.toOrderDishDto(orderDish, dishPageResponseDto);
+                        }).collect(Collectors.toList());
+
+                Restaurant restaurant = restaurantServicePort.getRestaurant(order.getIdRestaurant());
+                Status status = statusServicePort.getStatus(order.getIdStatus());
+                return orderResponseMapper.toOrderPageDto(
+                        order,
+                        restaurantResponseMapper.toRestaurantsPageDto(restaurant),
+                        statusResponseMapper.toStatusOrderDto(status),
+                        orderDishListResponseDtos
+                );
+            });
+        }
+        else {
+            throw new DifferentRestaurantEmployeeException();
+        }
+
     }
 }
