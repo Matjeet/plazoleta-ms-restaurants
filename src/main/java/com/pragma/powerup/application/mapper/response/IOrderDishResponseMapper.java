@@ -12,7 +12,6 @@ import org.mapstruct.ReportingPolicy;
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface IOrderDishResponseMapper {
 
-    @Mapping(source = "orderDish.id", target = "id")
     @Mapping(source = "dishPageResponseDto", target = "dish")
     OrderDishListResponseDto toOrderDishDto(OrderDish orderDish, DishPageResponseDto dishPageResponseDto);
 }
