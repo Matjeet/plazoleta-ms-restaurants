@@ -8,6 +8,8 @@ import com.pragma.powerup.infrastructure.out.jpa.adapter.*;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.*;
 import com.pragma.powerup.infrastructure.out.jpa.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.procedure.spi.ParameterRegistrationImplementor;
+import org.springframework.cloud.util.ConditionalOnBootstrapEnabled;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -67,6 +69,16 @@ public class BeanConfiguration {
     @Bean
     public IOrderServicePort orderServicePort(){
         return new OrderUseCase(orderPersistencePort());
+    }
+
+    @Bean
+    public IHttpRequestContextHolderPersistencePort httpRequestContextHolderPersistencePort(){
+        return new HttpRequestContextHolder();
+    }
+
+    @Bean
+    public IHttpRequestContextHolderServicePort httpRequestContextHolderServicePort(){
+        return new HttpRequestContextHolderUseCase(httpRequestContextHolderPersistencePort());
     }
 
     @Bean
