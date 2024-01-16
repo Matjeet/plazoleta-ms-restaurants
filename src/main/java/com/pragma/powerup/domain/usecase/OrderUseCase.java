@@ -19,7 +19,7 @@ public class OrderUseCase implements IOrderServicePort {
     }
 
     @Override
-    public Page<Order> getOrderByStatus(Pageable pageable, int idStatus) {
-        return orderPersistencePort.getOrderByStatus(pageable, idStatus);
+    public Page<Order> getOrderByStatus(Pageable pageable, int idStatus, int idRestaurant) {
+        return orderPersistencePort.getOrderByStatus(pageable, idStatus, idRestaurant);
     }
 }

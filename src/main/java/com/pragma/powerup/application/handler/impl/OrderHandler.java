@@ -57,9 +57,9 @@ public class OrderHandler implements IOrderHandler {
     }
 
     @Override
-    public Page<OrderPageResponseDto> getOrderByStatus(Pageable pageable, int idStatus) {
+    public Page<OrderPageResponseDto> getOrderByStatus(Pageable pageable, int idStatus, int idRestaurant) {
 
-        Page<Order> orders = orderServicePort.getOrderByStatus(pageable, idStatus);
+        Page<Order> orders = orderServicePort.getOrderByStatus(pageable, idStatus, idRestaurant);
 
 
         return orders.map(order -> {

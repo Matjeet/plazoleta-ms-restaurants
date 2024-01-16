@@ -1,6 +1,7 @@
 package com.pragma.powerup.infrastructure.out.jpa.repository;
 
 import com.pragma.powerup.infrastructure.out.jpa.entity.OrderEntity;
+import com.pragma.powerup.infrastructure.out.jpa.entity.RestaurantEntity;
 import com.pragma.powerup.infrastructure.out.jpa.entity.StatusEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,5 +12,5 @@ public interface IOrderRepository extends JpaRepository<OrderEntity, Integer> {
 
     Optional<OrderEntity> findByIdClient(int idClient);
 
-    Page<OrderEntity> findByStatus(StatusEntity statusEntity);
+    Page<OrderEntity> findByStatusAndRestaurant(StatusEntity statusEntity, RestaurantEntity restaurantEntity);
 }

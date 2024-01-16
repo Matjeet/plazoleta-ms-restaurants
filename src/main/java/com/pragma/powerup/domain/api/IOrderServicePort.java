@@ -8,5 +8,5 @@ public interface IOrderServicePort {
 
     int saveOrder(Order order);
 
-    Page<Order> getOrderByStatus(Pageable pageable, int idStatus);
+    Page<Order> getOrderByStatus(Pageable pageable, int idStatus, int idRestaurant);
 }
