@@ -7,4 +7,6 @@ import java.util.List;
 public interface IOrderDishServicePort {
 
     void saveOrderDish(List<OrderDish> orderDishes);
+
+    List<OrderDish> getOrderDishList(int idOrder);
 }
