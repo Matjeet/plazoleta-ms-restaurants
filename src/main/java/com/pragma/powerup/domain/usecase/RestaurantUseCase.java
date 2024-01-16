@@ -53,4 +53,9 @@ public class RestaurantUseCase implements IRestaurantServicePort {
     public Page<Restaurant> getRestaurants(Pageable pageable) {
         return restaurantPersistencePort.getRestaurants(pageable);
     }
+
+    @Override
+    public Restaurant getRestaurant(int id) {
+        return restaurantPersistencePort.getRestaurant(id);
+    }
 }
