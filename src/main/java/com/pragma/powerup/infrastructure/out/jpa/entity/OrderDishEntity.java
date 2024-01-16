@@ -8,15 +8,23 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "all_status")
+@Table(name = "orderDish")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class StatusEntity {
+public class OrderDishEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String name;
+    private int quantity;
+
+    @ManyToOne
+    @JoinColumn(name = "dish_id", nullable = false)
+    private DishEntity dish;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id", nullable = false)
+    private OrderEntity order;
 }

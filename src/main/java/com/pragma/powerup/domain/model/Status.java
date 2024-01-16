@@ -10,6 +10,9 @@ public class Status {
         this.name = name;
     }
 
+    public Status() {
+    }
+
     public int getId() {
         return id;
     }
