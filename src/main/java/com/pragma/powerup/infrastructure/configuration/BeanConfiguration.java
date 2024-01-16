@@ -3,6 +3,7 @@ package com.pragma.powerup.infrastructure.configuration;
 import com.pragma.powerup.domain.api.*;
 import com.pragma.powerup.domain.spi.*;
 import com.pragma.powerup.domain.usecase.*;
+import com.pragma.powerup.infrastructure.http.util.HttpRequestContextHolder;
 import com.pragma.powerup.infrastructure.out.jpa.adapter.*;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.*;
 import com.pragma.powerup.infrastructure.out.jpa.repository.*;
@@ -27,6 +28,16 @@ public class BeanConfiguration {
     private final IOrderRepository orderRepository;
     private final IOrderDishEntityMapper orderDishEntityMapper;
     private final IOrderDishRepository orderDishRepository;
+
+    @Bean
+    public IHttpRequestContextHolderPersistencePort httpRequestContextHolderPersistencePort(){
+        return new HttpRequestContextHolder();
+    }
+
+    @Bean
+    public IHttpRequestContextHolderServicePort httpRequestContextHolderServicePort(){
+        return new HttpRequestContextHolderUseCase(httpRequestContextHolderPersistencePort());
+    }
 
     @Bean
     public IOrderDishPersistencePort orderDishPersistencePort(){
