@@ -44,7 +44,11 @@ public class OrderHandler implements IOrderHandler {
 
         int idStatus = statusServicePort.getStatusId(BACKORDER);
 
-        int idOrder = orderServicePort.saveOrder(orderRequestMapper.toOrder(registerOrderRequestDto, idStatus));
+        int idOrder = orderServicePort.saveOrder(orderRequestMapper.toOrder(
+                registerOrderRequestDto,
+                idStatus
+                )
+        );
 
         orderDishServicePort.saveOrderDish(
                 registerOrderRequestDto.getOrderDishRequestDtos().stream().map(
@@ -57,9 +61,13 @@ public class OrderHandler implements IOrderHandler {
     }
 
     @Override
-    public Page<OrderPageResponseDto> getOrderByStatus(Pageable pageable, int idStatus, int idRestaurant) {
+    public Page<OrderPageResponseDto> getOrderByStatusAndRestaurant(Pageable pageable, int idStatus, int idRestaurant) {
 
-        Page<Order> orders = orderServicePort.getOrderByStatus(pageable, idStatus, idRestaurant);
+        Page<Order> orders = orderServicePort.getOrderByStatusAndRestaurant(
+                pageable,
+                idStatus,
+                idRestaurant
+        );
 
 
         return orders.map(order -> {
