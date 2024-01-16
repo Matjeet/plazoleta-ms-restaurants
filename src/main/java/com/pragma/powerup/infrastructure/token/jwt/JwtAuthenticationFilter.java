@@ -45,8 +45,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private String getTokenRequest(HttpServletRequest request) {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        httpRequestContextHolderPersistencePort.setToken(authHeader);
-
         if(StringUtils.hasText(authHeader) && authHeader.startsWith(BEARER_TOKEN_PREFIX)){
             httpRequestContextHolderPersistencePort.setToken(authHeader);
             return authHeader.substring(7);
