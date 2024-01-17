@@ -7,12 +7,14 @@ public class Order {
     private int idRestaurant;
     private int idClient;
     private int idStatus;
+    private Integer idEmployee;
 
-    public Order(int id, int idRestaurant, int idClient, int idStatus) {
+    public Order(int id, int idRestaurant, int idClient, int idStatus, Integer idEmployee) {
         this.id = id;
         this.idRestaurant = idRestaurant;
         this.idClient = idClient;
         this.idStatus = idStatus;
+        this.idEmployee = idEmployee;
     }
 
     public Order() {
@@ -48,5 +50,13 @@ public class Order {
 
     public void setIdStatus(int idStatus) {
         this.idStatus = idStatus;
+    }
+
+    public Integer getIdEmployee() {
+        return idEmployee;
+    }
+
+    public void setIdEmployee(Integer idEmployee) {
+        this.idEmployee = idEmployee;
     }
 }
