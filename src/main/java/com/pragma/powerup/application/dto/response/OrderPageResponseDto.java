@@ -11,6 +11,7 @@ public class OrderPageResponseDto {
 
     private int id;
     private int idClient;
+    private Integer idEmployee;
     private RestaurantsPageResponseDto restaurant;
     private StatusOrderResponseDto status;
     private List<OrderDishListResponseDto> orderDishes;
