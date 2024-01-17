@@ -56,4 +56,18 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
         );
         return orderEntities.map(orderEntityMapper::toOrder);
     }
+
+    @Override
+    public void orderInProcess(int idEmployee, int idOrder) {
+
+        OrderEntity orderEntity = orderRepository.getReferenceById(idOrder);
+
+        if (orderEntity.getIdEmployee() == idEmployee &&
+            orderEntity.getStatus().getName().equals(Constants.BACKORDER)){
+
+            StatusEntity statusEntity = statusRepository.findByName(Constants.IN_PROCESS);
+            orderEntity.setStatus(statusEntity);
+            orderRepository.save(orderEntity);
+        }
+    }
 }
