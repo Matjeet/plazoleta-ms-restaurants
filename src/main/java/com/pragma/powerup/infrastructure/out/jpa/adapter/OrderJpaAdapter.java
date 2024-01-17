@@ -9,6 +9,8 @@ import com.pragma.powerup.infrastructure.out.jpa.repository.IOrderRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IRestaurantRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IStatusRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @RequiredArgsConstructor
 public class OrderJpaAdapter implements IOrderPersistencePort {
@@ -33,5 +35,15 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
             );
             return orderEntity.getId();
         }
+    }
+
+    @Override
+    public Page<Order> getOrderByStatusAndRestaurant(Pageable pageable, int idStatus, int idRestaurant) {
+        Page<OrderEntity> orderEntities = orderRepository.findByStatusAndRestaurant(
+                pageable,
+                statusRepository.getReferenceById(idStatus),
+                restaurantRepository.getReferenceById(idRestaurant)
+        );
+        return orderEntities.map(orderEntityMapper::toOrder);
     }
 }

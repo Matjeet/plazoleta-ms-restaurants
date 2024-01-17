@@ -32,16 +32,6 @@ public class BeanConfiguration {
     private final IOrderDishRepository orderDishRepository;
 
     @Bean
-    public IHttpRequestContextHolderPersistencePort httpRequestContextHolderPersistencePort(){
-        return new HttpRequestContextHolder();
-    }
-
-    @Bean
-    public IHttpRequestContextHolderServicePort httpRequestContextHolderServicePort(){
-        return new HttpRequestContextHolderUseCase(httpRequestContextHolderPersistencePort());
-    }
-
-    @Bean
     public IOrderDishPersistencePort orderDishPersistencePort(){
         return new OrderDishJpaAdapter(
                 orderDishEntityMapper,

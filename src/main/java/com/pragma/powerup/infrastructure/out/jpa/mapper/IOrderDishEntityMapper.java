@@ -17,4 +17,9 @@ public interface IOrderDishEntityMapper {
     @Mapping(source = "dishEntity", target = "dish")
     @Mapping(source = "orderEntity", target = "order")
     OrderDishEntity toEntity(OrderDish orderDish, DishEntity dishEntity, OrderEntity orderEntity);
+
+    @Mapping(source = "orderDishEntity.id", target = "id")
+    @Mapping(source = "orderDishEntity.dish.id", target = "idDish")
+    @Mapping(source = "orderDishEntity.order.id", target = "idOrder")
+    OrderDish toOrderDish(OrderDishEntity orderDishEntity);
 }

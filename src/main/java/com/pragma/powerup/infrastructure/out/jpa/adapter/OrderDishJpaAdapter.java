@@ -10,6 +10,7 @@ import com.pragma.powerup.infrastructure.out.jpa.repository.IOrderRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
@@ -32,5 +33,14 @@ public class OrderDishJpaAdapter implements IOrderDishPersistencePort {
         
         orderDishEntities.forEach(orderDishRepository::save);
 
+    }
+
+    @Override
+    public List<OrderDish> getOrderDishList(int idOrder) {
+
+        List<OrderDishEntity> orderDishEntities = orderDishRepository.findAllByOrder(
+                orderRepository.getReferenceById(idOrder)
+        );
+        return orderDishEntities.stream().map(orderDishEntityMapper::toOrderDish).collect(Collectors.toList());
     }
 }
