@@ -10,6 +10,7 @@ import com.pragma.powerup.application.handler.IOrderHandler;
 import com.pragma.powerup.application.mapper.request.IOrderDishRequestMapper;
 import com.pragma.powerup.application.mapper.request.IOrderRequestMapper;
 import com.pragma.powerup.application.mapper.response.*;
+import com.pragma.powerup.domain.Constants;
 import com.pragma.powerup.domain.api.*;
 import com.pragma.powerup.domain.model.*;
 import lombok.RequiredArgsConstructor;
@@ -42,11 +43,10 @@ public class OrderHandler implements IOrderHandler {
     private final IUsersFeignClient usersFeignClient;
     private final IHttpRequestContextHolderServicePort httpRequestContextHolderServicePort;
 
-    private static final String BACKORDER = "pendiente";
     @Override
     public void saveOrder(RegisterOrderRequestDto registerOrderRequestDto) {
 
-        int idStatus = statusServicePort.getStatusId(BACKORDER);
+        int idStatus = statusServicePort.getStatusId(Constants.BACKORDER);
 
         int idOrder = orderServicePort.saveOrder(orderRequestMapper.toOrder(
                 registerOrderRequestDto,
