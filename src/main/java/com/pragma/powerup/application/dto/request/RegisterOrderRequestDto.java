@@ -11,5 +11,6 @@ public class RegisterOrderRequestDto {
 
     private int idRestaurant;
     private int idClient;
+    private Integer idEmployee = null;
     private List<RegisterOrderDishRequestDto> orderDishRequestDtos;
 }
