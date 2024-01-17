@@ -68,8 +68,9 @@ public class OrderHandler implements IOrderHandler {
     public Page<OrderPageResponseDto> getOrderByStatusAndRestaurant(
             Pageable pageable,
             int idStatus,
-            int idEmployee ,
-            int idRestaurant
+            int idEmployee,
+            int idRestaurant,
+            int idOrder
     ) {
 
         if (usersFeignClient.validateRestaurantEmployee(
@@ -78,6 +79,11 @@ public class OrderHandler implements IOrderHandler {
                 idRestaurant
         ))
         {
+
+            if (idOrder != 0) {
+                orderServicePort.orderInProcess(idEmployee, idOrder);
+            }
+            
             Page<Order> orders = orderServicePort.getOrderByStatusAndRestaurant(
                     pageable,
                     idStatus,

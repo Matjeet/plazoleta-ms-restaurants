@@ -70,7 +70,8 @@ public class OrderRestController {
                 pageable,
                 idStatus,
                 idEmployee,
-                idRestaurant
+                idRestaurant,
+                0
         );
 
         return ResponseEntity
