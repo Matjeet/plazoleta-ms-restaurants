@@ -79,7 +79,10 @@ public class OrderRestController {
                 .body(pageResponseDtos.getContent());
     }
 
-    @Operation(summary = "Get a page of orders from a specific restaurant and filtered by status")
+    @Operation(
+            summary = "Get a page of orders from a specific restaurant, " +
+                    "filtered by status and assign an order to an employee"
+    )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
