@@ -4,6 +4,7 @@ import com.pragma.powerup.domain.Constants;
 import com.pragma.powerup.domain.model.Order;
 import com.pragma.powerup.domain.spi.IOrderPersistencePort;
 import com.pragma.powerup.infrastructure.exception.CustomerHasAnOrderException;
+import com.pragma.powerup.infrastructure.exception.NotBackOrderStatusException;
 import com.pragma.powerup.infrastructure.out.jpa.entity.OrderEntity;
 import com.pragma.powerup.infrastructure.out.jpa.entity.StatusEntity;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.IOrderEntityMapper;
@@ -62,12 +63,16 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
 
         OrderEntity orderEntity = orderRepository.getReferenceById(idOrder);
 
-        if (orderEntity.getIdEmployee() == idEmployee &&
-            orderEntity.getStatus().getName().equals(Constants.BACKORDER)){
+        if (orderEntity.getStatus().getName().equals(Constants.BACKORDER)){
 
             StatusEntity statusEntity = statusRepository.findByName(Constants.IN_PROCESS);
             orderEntity.setStatus(statusEntity);
+            orderEntity.setIdEmployee(idEmployee);
             orderRepository.save(orderEntity);
+
+        }
+        else {
+            throw new NotBackOrderStatusException();
         }
     }
 }
