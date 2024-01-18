@@ -83,7 +83,7 @@ public class OrderHandler implements IOrderHandler {
             if (idOrder != 0) {
                 orderServicePort.orderInProcess(idEmployee, idOrder);
             }
-            
+
             Page<Order> orders = orderServicePort.getOrderByStatusAndRestaurant(
                     pageable,
                     idStatus,
