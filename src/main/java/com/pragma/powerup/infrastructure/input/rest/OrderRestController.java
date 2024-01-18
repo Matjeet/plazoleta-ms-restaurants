@@ -78,4 +78,41 @@ public class OrderRestController {
                 .status(HttpStatus.OK)
                 .body(pageResponseDtos.getContent());
     }
+
+    @Operation(summary = "Get a page of orders from a specific restaurant and filtered by status")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "The request has been answered successfully",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Only an employee can make a request"
+            )
+    })
+    @PreAuthorize("hasRole('ROLE_empleado')")
+    @GetMapping("/assign/{page}/{size}/{idStatus}/{idEmployee}/{idRestaurant}/{idOrder}")
+    public ResponseEntity<List<OrderPageResponseDto>> assignOrder(
+            @PathVariable int page,
+            @PathVariable int size,
+            @PathVariable int idStatus,
+            @PathVariable int idEmployee,
+            @PathVariable int idRestaurant,
+            @PathVariable int idOrder
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<OrderPageResponseDto> pageResponseDtos = orderHandler.getOrderByStatusAndRestaurant(
+                pageable,
+                idStatus,
+                idEmployee,
+                idRestaurant,
+                idOrder
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(pageResponseDtos.getContent());
+    }
 }

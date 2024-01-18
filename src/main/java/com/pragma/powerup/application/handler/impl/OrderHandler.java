@@ -79,7 +79,7 @@ public class OrderHandler implements IOrderHandler {
                 idRestaurant
         ))
         {
-
+            
             if (idOrder != 0) {
                 orderServicePort.orderInProcess(idEmployee, idOrder);
             }
