@@ -1,9 +1,12 @@
 package com.pragma.powerup.infrastructure.out.jpa.adapter;
 
+import com.pragma.powerup.domain.Constants;
 import com.pragma.powerup.domain.model.Order;
 import com.pragma.powerup.domain.spi.IOrderPersistencePort;
 import com.pragma.powerup.infrastructure.exception.CustomerHasAnOrderException;
+import com.pragma.powerup.infrastructure.exception.NotBackOrderStatusException;
 import com.pragma.powerup.infrastructure.out.jpa.entity.OrderEntity;
+import com.pragma.powerup.infrastructure.out.jpa.entity.StatusEntity;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.IOrderEntityMapper;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IOrderRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IRestaurantRepository;
@@ -26,14 +29,22 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
             throw new CustomerHasAnOrderException();
         }
         else{
-            OrderEntity orderEntity = orderRepository.save(
-                    orderEntityMapper.toEntity(
-                            order,
-                            restaurantRepository.getReferenceById(order.getIdRestaurant()),
-                            statusRepository.getReferenceById(order.getIdStatus())
-                    )
-            );
-            return orderEntity.getId();
+            StatusEntity statusEntity = statusRepository.getReferenceById(order.getIdStatus());
+            if (statusEntity.getName().equals(Constants.BACKORDER) && order.getIdEmployee() == null){
+                OrderEntity orderEntity = orderRepository.save(
+                        orderEntityMapper.toEntity(
+                                order,
+                                restaurantRepository.getReferenceById(order.getIdRestaurant()),
+                                statusEntity
+                        )
+                );
+
+                return orderEntity.getId();
+            }
+            else {
+                throw new IllegalArgumentException();
+            }
+
         }
     }
 
@@ -45,5 +56,23 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
                 restaurantRepository.getReferenceById(idRestaurant)
         );
         return orderEntities.map(orderEntityMapper::toOrder);
+    }
+
+    @Override
+    public void orderInProcess(int idEmployee, int idOrder) {
+
+        OrderEntity orderEntity = orderRepository.getReferenceById(idOrder);
+
+        if (orderEntity.getStatus().getName().equals(Constants.BACKORDER)){
+
+            StatusEntity statusEntity = statusRepository.findByName(Constants.IN_PROCESS);
+            orderEntity.setStatus(statusEntity);
+            orderEntity.setIdEmployee(idEmployee);
+            orderRepository.save(orderEntity);
+
+        }
+        else {
+            throw new NotBackOrderStatusException();
+        }
     }
 }

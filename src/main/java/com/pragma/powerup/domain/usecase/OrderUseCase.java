@@ -22,4 +22,9 @@ public class OrderUseCase implements IOrderServicePort {
     public Page<Order> getOrderByStatusAndRestaurant(Pageable pageable, int idStatus, int idRestaurant) {
         return orderPersistencePort.getOrderByStatusAndRestaurant(pageable, idStatus, idRestaurant);
     }
+
+    @Override
+    public void orderInProcess(int idEmployee, int idOrder) {
+        orderPersistencePort.orderInProcess(idEmployee, idOrder);
+    }
 }

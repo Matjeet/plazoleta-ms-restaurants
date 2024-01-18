@@ -9,4 +9,6 @@ public interface IOrderPersistencePort {
     int saveOrder(Order order);
 
     Page<Order> getOrderByStatusAndRestaurant(Pageable pageable, int idStatus, int idRestaurant);
+
+    void orderInProcess(int idEmployee, int idOrder);
 }
