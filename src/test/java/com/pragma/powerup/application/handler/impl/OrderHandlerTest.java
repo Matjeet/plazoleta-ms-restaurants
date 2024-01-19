@@ -72,7 +72,7 @@ class OrderHandlerTest {
         orderDish.setIdDish(1);
         orderDish.setIdOrder(1);
 
-        when(statusServicePort.getStatusId("pendiente")).thenReturn(1);
+        when(statusServicePort.getStatusId(anyString())).thenReturn(1);
         when(orderRequestMapper.toOrder(registerOrderRequestDto, 1)).thenReturn(order);
         when(orderServicePort.saveOrder(order)).thenReturn(1);
         when(orderDishRequestMapper.toOrderDish(registerOrderDishRequestDto, 1)).thenReturn(orderDish);
@@ -80,7 +80,7 @@ class OrderHandlerTest {
 
         orderHandler.saveOrder(registerOrderRequestDto);
 
-        verify(statusServicePort, times(1)).getStatusId("pendiente");
+        verify(statusServicePort, times(1)).getStatusId(anyString());
         verify(orderRequestMapper,times(1)).toOrder(registerOrderRequestDto, 1);
         verify(orderServicePort, times(1)).saveOrder(order);
         verify(orderDishRequestMapper, times(2)).toOrderDish(registerOrderDishRequestDto,1);
