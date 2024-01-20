@@ -4,6 +4,7 @@ import com.pragma.powerup.domain.Constants;
 import com.pragma.powerup.domain.model.Order;
 import com.pragma.powerup.domain.spi.IOrderPersistencePort;
 import com.pragma.powerup.infrastructure.exception.CustomerHasAnOrderException;
+import com.pragma.powerup.infrastructure.exception.IncorrectStatusOrIdEmployeeException;
 import com.pragma.powerup.infrastructure.exception.NotBackOrderStatusException;
 import com.pragma.powerup.infrastructure.out.jpa.entity.OrderEntity;
 import com.pragma.powerup.infrastructure.out.jpa.entity.StatusEntity;
@@ -73,6 +74,23 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
         }
         else {
             throw new NotBackOrderStatusException();
+        }
+    }
+
+    @Override
+    public void orderReady(int idEmployee, int idOrder) {
+
+        OrderEntity orderEntity = orderRepository.getReferenceById(idOrder);
+
+        if(orderEntity.getStatus().getName().equals(Constants.IN_PROCESS) &&
+            orderEntity.getIdEmployee() == idEmployee){
+
+            StatusEntity statusEntity = statusRepository.findByName(Constants.READY);
+            orderEntity.setStatus(statusEntity);
+            orderRepository.save(orderEntity);
+        }
+        else {
+            throw new IncorrectStatusOrIdEmployeeException();
         }
     }
 }
