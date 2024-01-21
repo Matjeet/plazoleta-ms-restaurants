@@ -27,6 +27,6 @@ public interface IUsersFeignClient {
             @PathVariable int idRestaurant
     );
 
-    @GetMapping(value = "/client/v1/info/{idClient}}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/client/v1/info/{idClient}", consumes = MediaType.APPLICATION_JSON_VALUE)
     UserInfoResponseDto getClient(@RequestHeader("Authorization") String token,@PathVariable int idClient);
 }
