@@ -12,5 +12,5 @@ public interface IOrderServicePort {
 
     void orderInProcess(int idEmployee, int idOrder);
 
-    void orderReady(int idEmployee, int idOrder);
+    Order orderReady(int idEmployee, int idOrder);
 }

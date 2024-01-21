@@ -29,7 +29,7 @@ public class OrderUseCase implements IOrderServicePort {
     }
 
     @Override
-    public void orderReady(int idEmployee, int idOrder) {
+    public Order orderReady(int idEmployee, int idOrder) {
         orderPersistencePort.orderReady(idEmployee, idOrder);
     }
 }
