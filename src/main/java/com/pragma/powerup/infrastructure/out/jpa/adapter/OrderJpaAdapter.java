@@ -78,7 +78,7 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     }
 
     @Override
-    public void orderReady(int idEmployee, int idOrder) {
+    public Order orderReady(int idEmployee, int idOrder) {
 
         OrderEntity orderEntity = orderRepository.getReferenceById(idOrder);
 
@@ -87,7 +87,7 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
 
             StatusEntity statusEntity = statusRepository.findByName(Constants.READY);
             orderEntity.setStatus(statusEntity);
-            orderRepository.save(orderEntity);
+            return orderEntityMapper.toOrder(orderRepository.save(orderEntity));
         }
         else {
             throw new IncorrectStatusOrIdEmployeeException();
