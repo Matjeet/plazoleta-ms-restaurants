@@ -118,4 +118,13 @@ public class OrderRestController {
                 .status(HttpStatus.OK)
                 .body(pageResponseDtos.getContent());
     }
+
+
+    @PreAuthorize("hasRole('ROLE_empleado')")
+    @GetMapping("/ready/{idEmployee}/{idOrder}")
+    public ResponseEntity<Integer> orderReady(@PathVariable int idEmployee, @PathVariable int idOrder){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(orderHandler.orderReady(idEmployee, idOrder));
+    }
 }
