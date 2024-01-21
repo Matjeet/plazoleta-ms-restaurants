@@ -30,6 +30,8 @@ public class BeanConfiguration {
     private final IOrderRepository orderRepository;
     private final IOrderDishEntityMapper orderDishEntityMapper;
     private final IOrderDishRepository orderDishRepository;
+    private final IOrderCodeRepository orderCodeRepository;
+    private final IOrderCodeEntityMapper orderCodeEntityMapper;
 
     @Bean
     public IOrderDishPersistencePort orderDishPersistencePort(){
@@ -52,7 +54,9 @@ public class BeanConfiguration {
                 orderEntityMapper,
                 orderRepository,
                 restaurantRepository,
-                statusRepository
+                statusRepository,
+                orderCodeRepository,
+                orderCodeEntityMapper
         );
     }
 
