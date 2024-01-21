@@ -147,7 +147,9 @@ public class OrderHandler implements IOrderHandler {
         smsInfoRequestDto.setRestaurantName(restaurant.getName());
 
         int securityCode = smsFeignClient.sendSms(smsInfoRequestDto);
-        
+
+        orderServicePort.saveSecurityCode(securityCode,idOrder);
+
         //TODO: Hacer todo el fujo para guardar en una tabla el código del pedido
 
         return securityCode;
