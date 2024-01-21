@@ -16,4 +16,6 @@ public interface IOrderHandler {
             int idRestaurant,
             int idOrder
     );
+
+    int orderReady(int idEmployee, int idOrder);
 }

@@ -1,10 +1,13 @@
 package com.pragma.powerup.application.handler.impl;
 
+import com.pragma.powerup.application.client.ISmsFeignClient;
 import com.pragma.powerup.application.client.IUsersFeignClient;
 import com.pragma.powerup.application.dto.request.RegisterOrderRequestDto;
+import com.pragma.powerup.application.dto.request.SmsInfoRequestDto;
 import com.pragma.powerup.application.dto.response.DishPageResponseDto;
 import com.pragma.powerup.application.dto.response.OrderDishListResponseDto;
 import com.pragma.powerup.application.dto.response.OrderPageResponseDto;
+import com.pragma.powerup.application.dto.response.UserInfoResponseDto;
 import com.pragma.powerup.application.exceptions.DifferentRestaurantEmployeeException;
 import com.pragma.powerup.application.handler.IOrderHandler;
 import com.pragma.powerup.application.mapper.request.IOrderDishRequestMapper;
@@ -42,6 +45,7 @@ public class OrderHandler implements IOrderHandler {
     private final IStatusResponseMapper statusResponseMapper;
     private final IUsersFeignClient usersFeignClient;
     private final IHttpRequestContextHolderServicePort httpRequestContextHolderServicePort;
+    private final ISmsFeignClient smsFeignClient;
 
     @Override
     public void saveOrder(RegisterOrderRequestDto registerOrderRequestDto) {
@@ -124,5 +128,28 @@ public class OrderHandler implements IOrderHandler {
             throw new DifferentRestaurantEmployeeException();
         }
 
+    }
+
+    @Override
+    public int orderReady(int idEmployee, int idOrder) {
+
+        SmsInfoRequestDto smsInfoRequestDto = new SmsInfoRequestDto();
+
+        Order order = orderServicePort.orderReady(idEmployee, idOrder);
+        Restaurant restaurant = restaurantServicePort.getRestaurant(order.getIdRestaurant());
+        UserInfoResponseDto userInfoResponseDto = usersFeignClient.getClient(
+                httpRequestContextHolderServicePort.getToken(),
+                order.getIdClient()
+        );
+
+        smsInfoRequestDto.setPhoneNumber(userInfoResponseDto.getPhoneNumber());
+        smsInfoRequestDto.setName(userInfoResponseDto.getName());
+        smsInfoRequestDto.setRestaurantName(restaurant.getName());
+
+        int securityCode = smsFeignClient.sendSms(smsInfoRequestDto);
+        
+        //TODO: Hacer todo el fujo para guardar en una tabla el código del pedido
+
+        return securityCode;
     }
 }
