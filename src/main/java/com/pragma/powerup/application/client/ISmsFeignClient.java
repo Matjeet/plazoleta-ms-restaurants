@@ -5,6 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 @FeignClient(
         name = "microservice-sms",
@@ -13,5 +14,5 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface ISmsFeignClient {
 
     @PostMapping(value = "/sms/v1/send", consumes = MediaType.APPLICATION_JSON_VALUE)
-    int sendSms(@RequestBody SmsInfoRequestDto smsInfoRequestDto);
+    int sendSms(@RequestHeader("Authorization") String token, @RequestBody SmsInfoRequestDto smsInfoRequestDto);
 }
