@@ -32,4 +32,9 @@ public class OrderUseCase implements IOrderServicePort {
     public Order orderReady(int idEmployee, int idOrder) {
         return orderPersistencePort.orderReady(idEmployee, idOrder);
     }
+
+    @Override
+    public void saveSecurityCode(int securityCode, int idOrder) {
+        orderPersistencePort.saveSecurityCode(securityCode, idOrder);
+    }
 }
