@@ -11,4 +11,8 @@ public interface IOrderServicePort {
     Page<Order> getOrderByStatusAndRestaurant(Pageable pageable, int idStatus, int idRestaurant);
 
     void orderInProcess(int idEmployee, int idOrder);
+
+    Order orderReady(int idEmployee, int idOrder);
+
+    void saveSecurityCode(int securityCode, int idOrder);
 }

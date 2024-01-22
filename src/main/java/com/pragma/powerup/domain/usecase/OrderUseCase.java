@@ -27,4 +27,14 @@ public class OrderUseCase implements IOrderServicePort {
     public void orderInProcess(int idEmployee, int idOrder) {
         orderPersistencePort.orderInProcess(idEmployee, idOrder);
     }
+
+    @Override
+    public Order orderReady(int idEmployee, int idOrder) {
+        return orderPersistencePort.orderReady(idEmployee, idOrder);
+    }
+
+    @Override
+    public void saveSecurityCode(int securityCode, int idOrder) {
+        orderPersistencePort.saveSecurityCode(securityCode, idOrder);
+    }
 }

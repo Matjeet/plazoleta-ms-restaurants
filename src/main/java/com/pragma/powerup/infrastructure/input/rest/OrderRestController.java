@@ -5,6 +5,7 @@ import com.pragma.powerup.application.dto.response.OrderPageResponseDto;
 import com.pragma.powerup.application.handler.IOrderHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -117,5 +118,27 @@ public class OrderRestController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(pageResponseDtos.getContent());
+    }
+
+
+    @Operation(summary = "Change the order's status from 'en_preparación' to 'listo'," +
+            " send a SMS to the client and generate a securityCode")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "The request has been answered successfully",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Only an employee can make a request"
+            )
+    })
+    @PreAuthorize("hasRole('ROLE_empleado')")
+    @GetMapping("/ready/{idEmployee}/{idOrder}")
+    public ResponseEntity<Integer> orderReady(@PathVariable int idEmployee, @PathVariable int idOrder){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(orderHandler.orderReady(idEmployee, idOrder));
     }
 }

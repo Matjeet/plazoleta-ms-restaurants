@@ -1,6 +1,7 @@
 package com.pragma.powerup.application.client;
 
 
+import com.pragma.powerup.application.dto.response.UserInfoResponseDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,4 +26,7 @@ public interface IUsersFeignClient {
             @PathVariable int idEmployee,
             @PathVariable int idRestaurant
     );
+
+    @GetMapping(value = "/client/v1/info/{idClient}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    UserInfoResponseDto getClient(@RequestHeader("Authorization") String token,@PathVariable int idClient);
 }

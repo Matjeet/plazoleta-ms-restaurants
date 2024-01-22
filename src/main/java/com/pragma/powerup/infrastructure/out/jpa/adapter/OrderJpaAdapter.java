@@ -4,10 +4,13 @@ import com.pragma.powerup.domain.Constants;
 import com.pragma.powerup.domain.model.Order;
 import com.pragma.powerup.domain.spi.IOrderPersistencePort;
 import com.pragma.powerup.infrastructure.exception.CustomerHasAnOrderException;
+import com.pragma.powerup.infrastructure.exception.IncorrectStatusOrIdEmployeeException;
 import com.pragma.powerup.infrastructure.exception.NotBackOrderStatusException;
 import com.pragma.powerup.infrastructure.out.jpa.entity.OrderEntity;
 import com.pragma.powerup.infrastructure.out.jpa.entity.StatusEntity;
+import com.pragma.powerup.infrastructure.out.jpa.mapper.IOrderCodeEntityMapper;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.IOrderEntityMapper;
+import com.pragma.powerup.infrastructure.out.jpa.repository.IOrderCodeRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IOrderRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IRestaurantRepository;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IStatusRepository;
@@ -22,6 +25,8 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     private final IOrderRepository orderRepository;
     private final IRestaurantRepository restaurantRepository;
     private final IStatusRepository statusRepository;
+    private final IOrderCodeRepository orderCodeRepository;
+    private final IOrderCodeEntityMapper orderCodeEntityMapper;
 
     @Override
     public int saveOrder(Order order) {
@@ -74,5 +79,28 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
         else {
             throw new NotBackOrderStatusException();
         }
+    }
+
+    @Override
+    public Order orderReady(int idEmployee, int idOrder) {
+
+        OrderEntity orderEntity = orderRepository.getReferenceById(idOrder);
+
+        if(orderEntity.getStatus().getName().equals(Constants.IN_PROCESS) &&
+            orderEntity.getIdEmployee() == idEmployee){
+
+            StatusEntity statusEntity = statusRepository.findByName(Constants.READY);
+            orderEntity.setStatus(statusEntity);
+            return orderEntityMapper.toOrder(orderRepository.save(orderEntity));
+        }
+        else {
+            throw new IncorrectStatusOrIdEmployeeException();
+        }
+    }
+
+    @Override
+    public void saveSecurityCode(int securityCode, int idOrder) {
+        OrderEntity orderEntity = orderRepository.getReferenceById(idOrder);
+        orderCodeRepository.save(orderCodeEntityMapper.toOrderCodeEntity(securityCode, orderEntity));
     }
 }
