@@ -141,4 +141,27 @@ public class OrderRestController {
                 .status(HttpStatus.OK)
                 .body(orderHandler.orderReady(idEmployee, idOrder));
     }
+
+    @Operation(summary = "Change the order's status from 'listo' to 'entregado' using the security code")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "The request has been answered successfully",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Only an employee can make a request"
+            )
+    })
+    @PreAuthorize("hasRole('ROLE_empleado')")
+    @GetMapping("/deliver/{securityCode}/{idOrder}")
+    public ResponseEntity<Void> orderDelivered(@PathVariable int securityCode, @PathVariable int idOrder){
+
+        orderHandler.orderDelivered(securityCode, idOrder);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .build();
+    }
 }
