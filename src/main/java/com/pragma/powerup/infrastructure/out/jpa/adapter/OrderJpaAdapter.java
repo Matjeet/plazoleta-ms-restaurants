@@ -126,10 +126,11 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     }
 
     @Override
-    public void undoDelivered(int idOrder, int idStatus) {
+    public void undoDelivered(int idEmployee, int idOrder, int idStatus) {
 
         OrderEntity orderEntity = orderRepository.getReferenceById(idOrder);
-        if(orderEntity.getStatus().getName().equals(Constants.DELIVERED)){
+        if(orderEntity.getStatus().getName().equals(Constants.DELIVERED) &&
+           orderEntity.getIdEmployee() == idEmployee) {
 
             StatusEntity status = statusRepository.getReferenceById(idStatus);
             orderEntity.setStatus(status);

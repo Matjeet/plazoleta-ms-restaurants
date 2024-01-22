@@ -18,5 +18,5 @@ public interface IOrderServicePort {
 
     void orderDelivered(int securityCode, int idOrder, int idStatus);
 
-    void undoDelivered(int idOrder, int idStatus);
+    void undoDelivered(int idEmployee ,int idOrder, int idStatus);
 }
