@@ -133,8 +133,6 @@ public class OrderHandler implements IOrderHandler {
     @Override
     public int orderReady(int idEmployee, int idOrder) {
 
-        SmsInfoRequestDto smsInfoRequestDto = new SmsInfoRequestDto();
-
         Order order = orderServicePort.orderReady(idEmployee, idOrder);
         Restaurant restaurant = restaurantServicePort.getRestaurant(order.getIdRestaurant());
         UserInfoResponseDto userInfoResponseDto = usersFeignClient.getClient(
@@ -142,9 +140,7 @@ public class OrderHandler implements IOrderHandler {
                 order.getIdClient()
         );
 
-        smsInfoRequestDto.setPhoneNumber(userInfoResponseDto.getPhoneNumber());
-        smsInfoRequestDto.setName(userInfoResponseDto.getName());
-        smsInfoRequestDto.setRestaurantName(restaurant.getName());
+        SmsInfoRequestDto smsInfoRequestDto = orderRequestMapper.toSmsInfoDto(userInfoResponseDto, restaurant);
 
         int securityCode = smsFeignClient.sendSms(
                 httpRequestContextHolderServicePort.getToken(),
