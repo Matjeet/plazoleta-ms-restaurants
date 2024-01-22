@@ -37,4 +37,9 @@ public class OrderUseCase implements IOrderServicePort {
     public void saveSecurityCode(int securityCode, int idOrder) {
         orderPersistencePort.saveSecurityCode(securityCode, idOrder);
     }
+
+    @Override
+    public void orderDelivered(int securityCode, int idOrder) {
+        
+    }
 }
