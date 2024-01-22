@@ -15,4 +15,6 @@ public interface IOrderPersistencePort {
     Order orderReady(int idEmployee, int idOrder);
 
     void saveSecurityCode(int securityCode, int idOrder);
+
+    void orderDelivered(int securityCode, int idOrder);
 }

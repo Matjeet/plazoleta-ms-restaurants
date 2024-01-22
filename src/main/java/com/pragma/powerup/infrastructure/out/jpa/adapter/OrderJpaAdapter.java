@@ -3,9 +3,8 @@ package com.pragma.powerup.infrastructure.out.jpa.adapter;
 import com.pragma.powerup.domain.Constants;
 import com.pragma.powerup.domain.model.Order;
 import com.pragma.powerup.domain.spi.IOrderPersistencePort;
-import com.pragma.powerup.infrastructure.exception.CustomerHasAnOrderException;
-import com.pragma.powerup.infrastructure.exception.IncorrectStatusOrIdEmployeeException;
-import com.pragma.powerup.infrastructure.exception.NotBackOrderStatusException;
+import com.pragma.powerup.infrastructure.exception.*;
+import com.pragma.powerup.infrastructure.out.jpa.entity.OrderCodeEntity;
 import com.pragma.powerup.infrastructure.out.jpa.entity.OrderEntity;
 import com.pragma.powerup.infrastructure.out.jpa.entity.StatusEntity;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.IOrderCodeEntityMapper;
@@ -102,5 +101,26 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     public void saveSecurityCode(int securityCode, int idOrder) {
         OrderEntity orderEntity = orderRepository.getReferenceById(idOrder);
         orderCodeRepository.save(orderCodeEntityMapper.toOrderCodeEntity(securityCode, orderEntity));
+    }
+
+    @Override
+    public void orderDelivered(int securityCode, int idOrder) {
+
+        if(orderCodeRepository.findBySecurityCode(securityCode).isPresent()){
+
+            OrderCodeEntity orderCodeEntity = orderCodeRepository.findBySecurityCode(securityCode).get();
+
+            if(orderCodeEntity.getOrder().getId() == idOrder &&
+                orderCodeEntity.getOrder().getStatus().getName().equals(Constants.READY)){
+
+                orderCodeEntity.getOrder().getStatus().setName(Constants.DELIVERED);
+                orderCodeRepository.save(orderCodeEntity);
+            }else {
+                throw new DifferentSecurityCodeOrderException();
+            }
+
+        }else{
+            throw new NoDataFoundException();
+        }
     }
 }

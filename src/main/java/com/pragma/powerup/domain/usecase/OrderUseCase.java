@@ -40,6 +40,6 @@ public class OrderUseCase implements IOrderServicePort {
 
     @Override
     public void orderDelivered(int securityCode, int idOrder) {
-        
+        orderPersistencePort.orderDelivered(securityCode, idOrder);
     }
 }
