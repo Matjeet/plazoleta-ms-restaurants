@@ -42,4 +42,9 @@ public class OrderUseCase implements IOrderServicePort {
     public void orderDelivered(int securityCode, int idOrder, int idStatus) {
         orderPersistencePort.orderDelivered(securityCode, idOrder, idStatus);
     }
+
+    @Override
+    public void undoDelivered(int idOrder, int idStatus) {
+        
+    }
 }
