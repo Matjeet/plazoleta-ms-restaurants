@@ -17,4 +17,6 @@ public interface IOrderPersistencePort {
     void saveSecurityCode(int securityCode, int idOrder);
 
     void orderDelivered(int securityCode, int idOrder, int idStatus);
+
+    void undoDelivered(int idOrder, int idStatus);
 }

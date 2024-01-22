@@ -124,4 +124,20 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
             throw new NoDataFoundException();
         }
     }
+
+    @Override
+    public void undoDelivered(int idOrder, int idStatus) {
+
+        OrderEntity orderEntity = orderRepository.getReferenceById(idOrder);
+        if(orderEntity.getStatus().getName().equals(Constants.DELIVERED)){
+
+            StatusEntity status = statusRepository.getReferenceById(idStatus);
+            orderEntity.setStatus(status);
+            orderRepository.save(orderEntity);
+        }
+        else{
+            throw new OrderIsNotDeliveredException();
+        }
+
+    }
 }

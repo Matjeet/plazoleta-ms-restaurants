@@ -45,6 +45,6 @@ public class OrderUseCase implements IOrderServicePort {
 
     @Override
     public void undoDelivered(int idOrder, int idStatus) {
-        
+        orderPersistencePort.undoDelivered(idOrder, idStatus);
     }
 }
