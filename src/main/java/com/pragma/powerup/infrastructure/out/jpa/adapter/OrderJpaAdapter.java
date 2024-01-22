@@ -104,7 +104,7 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     }
 
     @Override
-    public void orderDelivered(int securityCode, int idOrder) {
+    public void orderDelivered(int securityCode, int idOrder, int idStatus) {
 
         if(orderCodeRepository.findBySecurityCode(securityCode).isPresent()){
 
@@ -113,7 +113,8 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
             if(orderCodeEntity.getOrder().getId() == idOrder &&
                 orderCodeEntity.getOrder().getStatus().getName().equals(Constants.READY)){
 
-                orderCodeEntity.getOrder().getStatus().setName(Constants.DELIVERED);
+                StatusEntity status = statusRepository.getReferenceById(idStatus);
+                orderCodeEntity.getOrder().setStatus(status);
                 orderCodeRepository.save(orderCodeEntity);
             }else {
                 throw new DifferentSecurityCodeOrderException();
