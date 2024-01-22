@@ -18,4 +18,6 @@ public interface IOrderHandler {
     );
 
     int orderReady(int idEmployee, int idOrder);
+
+    void orderDelivered(int securityCode, int irOrder);
 }

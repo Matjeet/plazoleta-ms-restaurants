@@ -151,4 +151,12 @@ public class OrderHandler implements IOrderHandler {
 
         return securityCode;
     }
+
+    @Override
+    public void orderDelivered(int securityCode, int irOrder) {
+
+        int idStatus = statusServicePort.getStatusId(Constants.DELIVERED);
+
+        orderServicePort.orderDelivered(securityCode, irOrder, idStatus);
+    }
 }
