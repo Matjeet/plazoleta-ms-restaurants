@@ -15,10 +15,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -69,6 +68,10 @@ class RestaurantHandlerTest {
 
         boolean result = restaurantHandler.saveRestaurant(registerRestaurantDto);
 
+        verify(httpRequestContextHolderServicePort, times(1)).getToken();
+        verify(usersFeignClient, times(1)).validateOwnerRole(anyString(), anyInt());
+        verify(restaurantRequestMapper, times(1)).toRestaurant(registerRestaurantDto);
+        verify(restaurantServicePort, times(1)).saveRestaurant(restaurant);
         assertTrue(result);
     }
 
@@ -80,6 +83,8 @@ class RestaurantHandlerTest {
 
         boolean result = restaurantHandler.saveRestaurant(registerRestaurantDto);
 
+        verify(httpRequestContextHolderServicePort, times(1)).getToken();
+        verify(usersFeignClient, times(1)).validateOwnerRole(anyString(), anyInt());
         assertFalse(result);
     }
 }
