@@ -5,7 +5,9 @@ import com.pragma.powerup.application.client.IUsersFeignClient;
 import com.pragma.powerup.application.dto.request.RegisterOrderDishRequestDto;
 import com.pragma.powerup.application.dto.request.RegisterOrderRequestDto;
 import com.pragma.powerup.application.dto.request.SmsInfoRequestDto;
+import com.pragma.powerup.application.dto.response.OrderPageResponseDto;
 import com.pragma.powerup.application.dto.response.UserInfoResponseDto;
+import com.pragma.powerup.application.exceptions.DifferentRestaurantEmployeeException;
 import com.pragma.powerup.application.mapper.request.IOrderDishRequestMapper;
 import com.pragma.powerup.application.mapper.request.IOrderRequestMapper;
 import com.pragma.powerup.domain.api.*;
@@ -18,9 +20,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,6 +40,7 @@ class OrderHandlerTest {
     private Restaurant restaurant;
     private UserInfoResponseDto userInfoResponseDto;
     private SmsInfoRequestDto smsInfoRequestDto;
+    private Pageable pageable;
 
     @Mock
     private IOrderRequestMapper orderRequestMapper;
@@ -73,6 +78,8 @@ class OrderHandlerTest {
         order.setIdRestaurant(1);
         order.setIdClient(1);
         order.setIdStatus(1);
+
+        pageable = PageRequest.of(1,1);
     }
 
     @Test
@@ -148,5 +155,57 @@ class OrderHandlerTest {
         verify(orderServicePort).saveSecurityCode(anyInt(), anyInt());
         assertInstanceOf(Integer.class, result);
 
+    }
+
+    @Test
+    void getOrderByStatusAndRestaurantFeignAndIdOrderSuccess(){
+
+        Page<Order> orderPage = Page.empty(PageRequest.of(1,1));
+        Page<OrderPageResponseDto> orderPageResponseDtoPage = Page.empty(PageRequest.of(1,1));
+
+        when(httpRequestContextHolderServicePort.getToken()).thenReturn("");
+        when(usersFeignClient.validateRestaurantEmployee(anyString(), anyInt(),anyInt())).thenReturn(true);
+        doNothing().when(orderServicePort).orderInProcess(anyInt(),anyInt());
+        when(orderServicePort.getOrderByStatusAndRestaurant(pageable, 1, 1)).thenReturn(orderPage);
+
+        Page<OrderPageResponseDto> result = orderHandler.getOrderByStatusAndRestaurant(pageable, 1, 1, 1, 1);
+
+        verify(httpRequestContextHolderServicePort, times(1)).getToken();
+        verify(usersFeignClient, times(1)).validateRestaurantEmployee(anyString(), anyInt(), anyInt());
+        verify(orderServicePort, times(1)).orderInProcess(anyInt(), anyInt());
+        verify(orderServicePort, times(1)).getOrderByStatusAndRestaurant(pageable, 1, 1);
+        assertEquals(orderPageResponseDtoPage, result);
+
+    }
+
+    @Test
+    void getOrderByStatusAndRestaurantFeignFailed(){
+
+        when(httpRequestContextHolderServicePort.getToken()).thenReturn("");
+        when(usersFeignClient.validateRestaurantEmployee(anyString(), anyInt(),anyInt())).thenReturn(false);
+
+        DifferentRestaurantEmployeeException exception = assertThrows(DifferentRestaurantEmployeeException.class, () -> {
+            orderHandler.getOrderByStatusAndRestaurant(pageable, 1,1,1,1);
+        }, "No exception was made");
+
+        assertNull(exception.getMessage());
+    }
+
+    @Test
+    void getOrderByStatusAndRestaurantFeignSuccessIdOrderFailed(){
+
+        Page<Order> orderPage = Page.empty(PageRequest.of(1,1));
+        Page<OrderPageResponseDto> orderPageResponseDtoPage = Page.empty(PageRequest.of(1,1));
+
+        when(httpRequestContextHolderServicePort.getToken()).thenReturn("");
+        when(usersFeignClient.validateRestaurantEmployee(anyString(), anyInt(),anyInt())).thenReturn(true);
+        when(orderServicePort.getOrderByStatusAndRestaurant(pageable, 1, 1)).thenReturn(orderPage);
+
+        Page<OrderPageResponseDto> result = orderHandler.getOrderByStatusAndRestaurant(pageable, 1, 1, 1, 0);
+
+        verify(httpRequestContextHolderServicePort, times(1)).getToken();
+        verify(usersFeignClient, times(1)).validateRestaurantEmployee(anyString(), anyInt(), anyInt());
+        verify(orderServicePort, times(1)).getOrderByStatusAndRestaurant(pageable, 1, 1);
+        assertEquals(orderPageResponseDtoPage, result);
     }
 }
