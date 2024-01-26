@@ -16,8 +16,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @RequiredArgsConstructor
 public class BeanConfiguration {
-    private final IObjectRepository objectRepository;
-    private final IObjectEntityMapper objectEntityMapper;
+
     private final IRestaurantRepository restaurantRepository;
     private final IRestaurantEntityMapper restaurantEntityMapper;
     private final IDishRepository dishRepository;
@@ -120,14 +119,4 @@ public class BeanConfiguration {
         return new RestaurantUseCase(restaurantPersistencePort());
     }
 
-
-    @Bean
-    public IObjectPersistencePort objectPersistencePort() {
-        return new ObjectJpaAdapter(objectRepository, objectEntityMapper);
-    }
-
-    @Bean
-    public IObjectServicePort objectServicePort() {
-        return new ObjectUseCase(objectPersistencePort());
-    }
 }
